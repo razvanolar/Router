@@ -28,6 +28,7 @@ public class ToolBarController implements Controller<ToolBarController.IToolBarV
     ToggleButton getStartMarkerButton();
     ToggleButton getEndMarkerButton();
     ToggleButton getIntermediateMarkerButton();
+    ToggleButton getElevationMarkerButton();
     ToggleGroup getToggleGroup();
     Button getFindRouteButton();
     Button getPrevRouteButton();
@@ -56,6 +57,8 @@ public class ToolBarController implements Controller<ToolBarController.IToolBarV
         mapSettingsModel.setMarkerType(MarkerTypes.END);
       else if (newValue == view.getIntermediateMarkerButton())
         mapSettingsModel.setMarkerType(MarkerTypes.INTERMEDIATE);
+      else if (newValue == view.getElevationMarkerButton())
+        mapSettingsModel.setMarkerType(MarkerTypes.ELEVATION);
       else
         mapSettingsModel.setMarkerType(MarkerTypes.NONE);
 

@@ -15,7 +15,7 @@ public class ToolBarView implements ToolBarController.IToolBarView {
   private ToggleButton startMarkerButton;
   private ToggleButton endMarkerButton;
   private ToggleButton intermediateMarkerButton;
-  private ToggleButton noneMarkerButton;
+  private ToggleButton elevationMarkerButton;
   private ToggleGroup toggleGroup;
   private Button findRouteButton;
   private Button prevRouteButton;
@@ -32,7 +32,8 @@ public class ToolBarView implements ToolBarController.IToolBarView {
     startMarkerButton = new ToggleButton("Start");
     endMarkerButton = new ToggleButton("End");
     intermediateMarkerButton = new ToggleButton("Intermediate");
-    noneMarkerButton = new ToggleButton("None");
+    elevationMarkerButton = new ToggleButton("Elevation");
+    ToggleButton noneMarkerButton = new ToggleButton("None");
     findRouteButton = new Button("Find Route");
     prevRouteButton = new Button("Prev Route");
     nextRouteButton = new Button("Next");
@@ -45,6 +46,7 @@ public class ToolBarView implements ToolBarController.IToolBarView {
             startMarkerButton,
             endMarkerButton,
             intermediateMarkerButton,
+            elevationMarkerButton,
             noneMarkerButton,
             new Separator(),
             findRouteButton,
@@ -52,7 +54,7 @@ public class ToolBarView implements ToolBarController.IToolBarView {
             nextRouteButton
     );
 
-    toggleGroup.getToggles().addAll(startMarkerButton, endMarkerButton, intermediateMarkerButton, noneMarkerButton);
+    toggleGroup.getToggles().addAll(startMarkerButton, endMarkerButton, intermediateMarkerButton, elevationMarkerButton, noneMarkerButton);
     noneMarkerButton.setSelected(true);
     toolBar.getStyleClass().add(RouterConstants.TOOL_BAR_CLASS);
   }
@@ -71,6 +73,10 @@ public class ToolBarView implements ToolBarController.IToolBarView {
 
   public ToggleButton getIntermediateMarkerButton() {
     return intermediateMarkerButton;
+  }
+
+  public ToggleButton getElevationMarkerButton() {
+    return elevationMarkerButton;
   }
 
   public ToggleGroup getToggleGroup() {

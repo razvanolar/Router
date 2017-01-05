@@ -1,4 +1,4 @@
-package code.router.events.clear_markers_events.clear_intermediate_markers_event;
+package code.router.events.markers_events.clear_markers_events.clear_intermediate_markers_event;
 
 import code.router.utils.event.Event;
 import code.router.utils.event.EventType;

@@ -1,4 +1,4 @@
-package code.router.events.clear_markers_events.clear_start_marker_event;
+package code.router.events.markers_events.clear_markers_events.clear_start_marker_event;
 
 import code.router.utils.event.EventHandler;
 

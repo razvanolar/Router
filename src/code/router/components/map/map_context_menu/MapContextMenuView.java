@@ -14,6 +14,7 @@ public class MapContextMenuView implements MapContextMenuController.IMapContextM
   private MenuItem clearStartMarkerMenuItem;
   private MenuItem clearEndMarkerMenuItem;
   private MenuItem clearIntermediateMarkersMenuItem;
+  private MenuItem clearElevationMarkersMenuItem;
   private MenuItem clearAllMarkersMenuItem;
 
   public MapContextMenuView() {
@@ -27,6 +28,7 @@ public class MapContextMenuView implements MapContextMenuController.IMapContextM
     clearStartMarkerMenuItem = new MenuItem("Start Marker");
     clearEndMarkerMenuItem = new MenuItem("End Marker");
     clearIntermediateMarkersMenuItem = new MenuItem("Intermediate Markers");
+    clearElevationMarkersMenuItem = new MenuItem("Elevation Markers");
     clearAllMarkersMenuItem = new MenuItem("All Markers");
     Menu clearMarkersMenu = new Menu("Clear Markers");
     contextMenu = new ContextMenu(directionMenu, clearMarkersMenu);
@@ -39,6 +41,7 @@ public class MapContextMenuView implements MapContextMenuController.IMapContextM
     clearMarkersMenu.getItems().addAll(clearStartMarkerMenuItem,
             clearEndMarkerMenuItem,
             clearIntermediateMarkersMenuItem,
+            clearElevationMarkersMenuItem,
             clearAllMarkersMenuItem);
   }
 
@@ -60,6 +63,10 @@ public class MapContextMenuView implements MapContextMenuController.IMapContextM
 
   public MenuItem getClearIntermediateMarkersMenuItem() {
     return clearIntermediateMarkersMenuItem;
+  }
+
+  public MenuItem getClearElevationMarkersMenuItem() {
+    return clearElevationMarkersMenuItem;
   }
 
   public MenuItem getClearAllMarkersMenuItem() {

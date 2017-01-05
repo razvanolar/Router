@@ -5,11 +5,13 @@
 var START_MARKER = "start";
 var END_MARKER = "end";
 var INTERMEDIATE_MARKER = "intermediate";
+var ELEVATION_MARKER = "elevation";
 var NONE_MARKER = "none";
 
 var startMarker = null;
 var endMarker = undefined;
 var intermediateMarkers = [];
+var elevationMarkers = [];
 var markerType = NONE_MARKER;
 
 google.maps.event.addListener(map, "click", function (event) {
@@ -23,11 +25,13 @@ google.maps.event.addListener(map, "click", function (event) {
         util.addMarker(latLng.lat(), latLng.lng(), 'addEndMarker');
     } else if (markerType === INTERMEDIATE_MARKER) {
         util.addMarker(latLng.lat(), latLng.lng(), 'addIntermediateMarker');
+    } else if (markerType == ELEVATION_MARKER) {
+        document.getElevationForLatLng(latLng);
     }
 });
 
 document.changeMarkerType = function (type) {
-    if (type == END_MARKER || type == START_MARKER || type == INTERMEDIATE_MARKER || type == NONE_MARKER)
+    if (type == END_MARKER || type == START_MARKER || type == INTERMEDIATE_MARKER || type == ELEVATION_MARKER || type == NONE_MARKER)
         markerType = type;
 };
 
@@ -84,6 +88,24 @@ document.addIntermediateMarker = function (lat, lng) {
     intermediateMarkers.push(marker);
 };
 
+document.addElevationMarker = function (lat, lng, label) {
+    var latLng = {
+        lat: lat,
+        lng: lng
+    };
+    var marker = new google.maps.Marker({
+        position: latLng,
+        map: map,
+        title: 'Elevation',
+        draggable: false,
+        icon: {
+            url: 'elevation_marker.png'
+        },
+        label: label
+    });
+    elevationMarkers.push(marker);
+};
+
 document.clearStartMarker = function () {
     if (startMarker) {
         startMarker.setMap(null);
@@ -106,8 +128,17 @@ document.clearIntermediateMarkers = function () {
     intermediateMarkers = [];
 };
 
+document.clearElevationMarkers = function () {
+    for (var i = 0; i < elevationMarkers.length; i ++) {
+        elevationMarkers[i].setMap(null);
+        elevationMarkers[i] = null;
+    }
+    elevationMarkers = [];
+};
+
 document.clearAllMarkers = function () {
     document.clearStartMarker();
     document.clearEndMarker();
     document.clearIntermediateMarkers();
+    document.clearElevationMarkers();
 };

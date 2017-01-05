@@ -72,17 +72,32 @@ document.getElevationsForRoute = function (route) {
         if (status === 'OK' && result[0]) {
             var concatenated_elevations = "";
             result.forEach(function (elevation) {
-                concatenated_elevations += elevation.elevation + ",";
+                concatenated_elevations += elevation.elevation + "+" + elevation.location.lat() + "+" + elevation.location.lng() + ",";
             });
-            util.updateElevationChart(concatenated_elevations);
+            util.updateElevationChart(concatenated_elevations.substring(0, concatenated_elevations.length - 1));
         } else {
             alert("No elevations found");
         }
     });
 };
 
+document.getElevationForLatLng = function (latLng) {
+    util.beginServiceCall("Finding Elevation...");
+    elevationService.getElevationForLocations({
+       'locations': [latLng]
+    }, function (result, status) {
+        util.endServiceCall();
+        if (status === 'OK' && result[0]) {
+            var res = result[0];
+            document.addElevationMarker(res.location.lat(), res.location.lng(), parseInt(res.elevation).toString());
+        } else {
+            alert("Unable to find elevation");
+        }
+    });
+};
+
 document.nextRoute = function () {
-    if (current_routes_index < routes_array.length - 1) {
+    if (routes_array && current_routes_index < routes_array.length - 1) {
         mapRenderer.setRouteIndex(++current_routes_index);
         document.getElevationsForRoute(routes_array[current_routes_index]);
         alert("Route index changed to " + current_routes_index + " from " + routes_array.length);
@@ -108,4 +123,6 @@ document.clearRenderer = function () {
     }
     mapRenderer = new google.maps.DirectionsRenderer({suppressMarkers: true});
     mapRenderer.setMap(map);
+    routes_array = null;
+    current_routes_index = -1;
 };

@@ -1,10 +1,11 @@
 package code.router.components.map.map_context_menu;
 
 import code.router.EventBus;
-import code.router.events.clear_markers_events.clear_all_markers_event.ClearAllMarkersEvent;
-import code.router.events.clear_markers_events.clear_end_marker_event.ClearEndMarkerEvent;
-import code.router.events.clear_markers_events.clear_intermediate_markers_event.ClearIntermediateMarkersEvent;
-import code.router.events.clear_markers_events.clear_start_marker_event.ClearStartMarkerEvent;
+import code.router.events.markers_events.clear_markers_events.clear_all_markers_event.ClearAllMarkersEvent;
+import code.router.events.markers_events.clear_markers_events.clear_elevation_markers_event.ClearElevationMarkersEvent;
+import code.router.events.markers_events.clear_markers_events.clear_end_marker_event.ClearEndMarkerEvent;
+import code.router.events.markers_events.clear_markers_events.clear_intermediate_markers_event.ClearIntermediateMarkersEvent;
+import code.router.events.markers_events.clear_markers_events.clear_start_marker_event.ClearStartMarkerEvent;
 import code.router.events.map_direction_change_event.MapDirectionChangedEvent;
 import code.router.utils.Controller;
 import code.router.utils.View;
@@ -23,6 +24,7 @@ public class MapContextMenuController implements Controller<MapContextMenuContro
     MenuItem getClearStartMarkerMenuItem();
     MenuItem getClearEndMarkerMenuItem();
     MenuItem getClearIntermediateMarkersMenuItem();
+    MenuItem getClearElevationMarkersMenuItem();
     MenuItem getClearAllMarkersMenuItem();
   }
 
@@ -37,6 +39,8 @@ public class MapContextMenuController implements Controller<MapContextMenuContro
     view.getClearEndMarkerMenuItem().setOnAction(event -> EventBus.fireEvent(new ClearEndMarkerEvent()));
 
     view.getClearIntermediateMarkersMenuItem().setOnAction(event -> EventBus.fireEvent(new ClearIntermediateMarkersEvent()));
+
+    view.getClearElevationMarkersMenuItem().setOnAction(event -> EventBus.fireEvent(new ClearElevationMarkersEvent()));
 
     view.getClearAllMarkersMenuItem().setOnAction(event -> EventBus.fireEvent(new ClearAllMarkersEvent()));
   }

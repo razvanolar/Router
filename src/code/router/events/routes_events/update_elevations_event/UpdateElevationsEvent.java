@@ -1,7 +1,10 @@
 package code.router.events.routes_events.update_elevations_event;
 
+import code.router.model.Elevation;
 import code.router.utils.event.Event;
 import code.router.utils.event.EventType;
+
+import java.util.List;
 
 /**
  * Created by razvanolar on 04.01.2017
@@ -10,13 +13,13 @@ public class UpdateElevationsEvent extends Event<UpdateElevationsEventHandler> {
 
   public static final EventType<UpdateElevationsEventHandler> TYPE = new EventType<>();
 
-  private double[] elevations;
+  private List<Elevation> elevations;
 
-  public UpdateElevationsEvent(double[] elevations) {
+  public UpdateElevationsEvent(List<Elevation> elevations) {
     this.elevations = elevations;
   }
 
-  public double[] getElevations() {
+  public List<Elevation> getElevations() {
     return elevations;
   }
 
