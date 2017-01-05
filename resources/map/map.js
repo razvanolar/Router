@@ -26,7 +26,7 @@ document.findRoute = function () {
         return;
     }
     var waypointsArray = [];
-    for (i = 0; i < intermediateMarkers.length; i ++) {
+    for (i = 0; i < intermediateMarkers.length; i++) {
         var point = {
             location: intermediateMarkers[i].getPosition(),
             stopover: false
@@ -99,4 +99,13 @@ document.prevRoute = function () {
 
 document.heightChanged = function (newHeight) {
     document.getElementById("map_canvas").setAttribute("style", "height:" + newHeight + "px;");
+};
+
+document.clearRenderer = function () {
+    if (mapRenderer) {
+        mapRenderer.setMap(null);
+        mapRenderer.setPanel(null);
+    }
+    mapRenderer = new google.maps.DirectionsRenderer({suppressMarkers: true});
+    mapRenderer.setMap(map);
 };

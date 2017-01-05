@@ -1,6 +1,14 @@
 package code.router.components.map.map_content.utils;
 
 import code.router.EventBus;
+import code.router.events.clear_markers_events.clear_all_markers_event.ClearAllMarkersEvent;
+import code.router.events.clear_markers_events.clear_all_markers_event.ClearAllMarkersEventHandler;
+import code.router.events.clear_markers_events.clear_end_marker_event.ClearEndMarkerEvent;
+import code.router.events.clear_markers_events.clear_end_marker_event.ClearEndMarkerEventHandler;
+import code.router.events.clear_markers_events.clear_intermediate_markers_event.ClearIntermediateMarkersEvent;
+import code.router.events.clear_markers_events.clear_intermediate_markers_event.ClearIntermediateMarkersEventHandler;
+import code.router.events.clear_markers_events.clear_start_marker_event.ClearStartMarkerEvent;
+import code.router.events.clear_markers_events.clear_start_marker_event.ClearStartMarkerEventHandler;
 import code.router.events.routes_events.find_route_event.FindRouteEvent;
 import code.router.events.routes_events.find_route_event.FindRouteEventHandler;
 import code.router.events.map_settings_change_event.MapSettingsChangeEvent;
@@ -59,6 +67,25 @@ public class MapContentUtils {
       if (!isDOMLoaded())
         return;
       webEngine.executeScript("document.nextRoute();");
+    });
+
+    EventBus.addHandler(ClearStartMarkerEvent.TYPE, (ClearStartMarkerEventHandler) event -> {
+      webEngine.executeScript("document.clearStartMarker();");
+      webEngine.executeScript("document.clearRenderer();");
+    });
+
+    EventBus.addHandler(ClearEndMarkerEvent.TYPE, (ClearEndMarkerEventHandler) event -> {
+      webEngine.executeScript("document.clearEndMarker();");
+      webEngine.executeScript("document.clearRenderer();");
+    });
+
+    EventBus.addHandler(ClearIntermediateMarkersEvent.TYPE, (ClearIntermediateMarkersEventHandler) event -> {
+      webEngine.executeScript("document.clearIntermediateMarkers();");
+    });
+
+    EventBus.addHandler(ClearAllMarkersEvent.TYPE, (ClearAllMarkersEventHandler) event -> {
+      webEngine.executeScript("document.clearAllMarkers();");
+      webEngine.executeScript("document.clearRenderer();");
     });
   }
 

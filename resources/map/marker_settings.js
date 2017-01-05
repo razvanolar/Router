@@ -16,16 +16,10 @@ google.maps.event.addListener(map, "click", function (event) {
     // util.test(event.latLng.lat(), event.latLng.lng());
     var latLng = event.latLng;
     if (markerType === START_MARKER) {
-        if (startMarker) {
-            startMarker.setMap(null);
-            startMarker = null;
-        }
+        document.clearStartMarker();
         util.addMarker(latLng.lat(), latLng.lng(), 'addStartMarker');
     } else if (markerType === END_MARKER) {
-        if (endMarker) {
-            endMarker.setMap(null);
-            endMarker = null;
-        }
+        document.clearEndMarker();
         util.addMarker(latLng.lat(), latLng.lng(), 'addEndMarker');
     } else if (markerType === INTERMEDIATE_MARKER) {
         util.addMarker(latLng.lat(), latLng.lng(), 'addIntermediateMarker');
@@ -70,7 +64,7 @@ document.addEndMarker = function (lat, lng) {
 };
 
 document.addIntermediateMarker = function (lat, lng) {
-    if (intermediateMarkers.length > 8) {
+    if (intermediateMarkers.length >= 8) {
         alert("Maximum number of intermediate markers was reached");
         return;
     }
@@ -88,4 +82,32 @@ document.addIntermediateMarker = function (lat, lng) {
         }
     });
     intermediateMarkers.push(marker);
+};
+
+document.clearStartMarker = function () {
+    if (startMarker) {
+        startMarker.setMap(null);
+        startMarker = null;
+    }
+};
+
+document.clearEndMarker = function () {
+    if (endMarker) {
+        endMarker.setMap(null);
+        endMarker = null;
+    }
+};
+
+document.clearIntermediateMarkers = function () {
+    for (var i = 0; i < intermediateMarkers.length; i ++) {
+        intermediateMarkers[i].setMap(null);
+        intermediateMarkers[i] = null;
+    }
+    intermediateMarkers = [];
+};
+
+document.clearAllMarkers = function () {
+    document.clearStartMarker();
+    document.clearEndMarker();
+    document.clearIntermediateMarkers();
 };
