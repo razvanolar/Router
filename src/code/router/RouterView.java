@@ -3,11 +3,12 @@ package code.router;
 import code.router.components.masking_indicator.MaskPane;
 import code.router.events.hide_tree_event.HideTreeEvent;
 import code.router.events.hide_tree_event.HideTreeEventHandler;
+import code.router.events.load_resources_events.load_map_event.LoadMapEvent;
 import code.router.events.mask_unmask_window_event.MaskWindowEvent;
 import code.router.events.mask_unmask_window_event.MaskWindowEventHandler;
 import code.router.events.mask_unmask_window_event.UnmaskWindowEvent;
 import code.router.events.mask_unmask_window_event.UnmaskWindowEventHandler;
-import code.router.events.new_route_event.NewRouteViewEvent;
+import code.router.events.new_route_event.AddNewRouteViewEvent;
 import code.router.events.new_route_event.NewRouteViewEventHandler;
 import code.router.events.show_projects_tree_event.ShowProjectsTreeEvent;
 import code.router.events.show_projects_tree_event.ShowProjectsTreeEventHandler;
@@ -97,7 +98,7 @@ public class RouterView implements RouterController.IRouterView {
       mainContainer.getChildren().remove(maskPane.asNode());
     });
 
-    EventBus.addHandler(NewRouteViewEvent.TYPE, (NewRouteViewEventHandler) event -> {
+    EventBus.addHandler(AddNewRouteViewEvent.TYPE, (NewRouteViewEventHandler) event -> {
       addMapTab(event.getTitle(), event.getMapComponent());
     });
   }
@@ -117,7 +118,15 @@ public class RouterView implements RouterController.IRouterView {
   public void addMapTab(String title, Component component) {
     Tab tab = new Tab(title, component.getView().asNode());
     tabPane.getTabs().add(tab);
-    tab.setUserData(component);
+    tab.setUserData(component.getController());
+    tabPane.getSelectionModel().select(tab);
+
+    RouterController.SELECTED_MAP_CONTROLLER = component.getController();
+    EventBus.fireEvent(new LoadMapEvent());
+  }
+
+  public TabPane getTabPane() {
+    return tabPane;
   }
 
   @Override

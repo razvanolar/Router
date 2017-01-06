@@ -1,10 +1,13 @@
 package code.router.components.map.map_content;
 
 import code.router.EventBus;
+import code.router.RouterController;
 import code.router.components.map.map_content.utils.MapContentUtils;
 import code.router.components.map.map_context_menu.MapContextMenuController;
 import code.router.events.load_resources_events.load_map_event.LoadMapEvent;
 import code.router.events.load_resources_events.load_map_event.LoadMapEventHandler;
+import code.router.events.mask_unmask_window_event.MaskWindowEvent;
+import code.router.events.mask_unmask_window_event.UnmaskWindowEvent;
 import code.router.utils.Component;
 import code.router.utils.Controller;
 import code.router.utils.RoutesUtils;
@@ -42,21 +45,23 @@ public class MapContentController implements Controller<MapContentController.IMa
         utils.mapHeightChanged(newValue.doubleValue());
       }
     });
+  }
 
-    EventBus.addHandler(LoadMapEvent.TYPE, (LoadMapEventHandler) event -> {
-      WebView webView = createWebView();
-      this.view.setMap(webView);
-      webEngine = webView.getEngine();
-      webEngine.load(RoutesUtils.getHtmlMapFile());
-      utils  = new MapContentUtils(webEngine);
+  public void loadMap() {
+    EventBus.fireEvent(new MaskWindowEvent("Loading Map Resources..."));
+    WebView webView = createWebView();
+    this.view.setMap(webView);
+    webEngine = webView.getEngine();
+    webEngine.load(RoutesUtils.getHtmlMapFile());
+    utils  = new MapContentUtils(webEngine);
 
-      Worker<Void> loadWorker = webEngine.getLoadWorker();
-      loadWorker.stateProperty().addListener((observable, oldValue, newValue) -> {
-        if (newValue == Worker.State.SUCCEEDED) {
-          utils.mapHeightChanged(this.view.getMainContainer().getHeight());
-          utils.setDomLoaded(true);
-        }
-      });
+    Worker<Void> loadWorker = webEngine.getLoadWorker();
+    loadWorker.stateProperty().addListener((observable, oldValue, newValue) -> {
+      if (newValue == Worker.State.SUCCEEDED) {
+        utils.mapHeightChanged(this.view.getMainContainer().getHeight());
+        utils.setDomLoaded(true);
+        EventBus.fireEvent(new UnmaskWindowEvent());
+      }
     });
   }
 

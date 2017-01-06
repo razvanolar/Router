@@ -2,11 +2,11 @@ package code.router.components.tool_bar;
 
 import code.router.EventBus;
 import code.router.events.map_settings_change_event.MapSettingsChangeEvent;
-import code.router.events.mask_unmask_window_event.MaskWindowEvent;
 import code.router.events.mask_unmask_window_event.UnmaskWindowEvent;
 import code.router.events.routes_events.find_route_event.FindRouteEvent;
 import code.router.events.routes_events.next_route_event.NextRouteEvent;
 import code.router.events.routes_events.previous_route_event.PreviousRouteEvent;
+import code.router.events.show_new_route_dialog_event.ShowNewRouteDialogEvent;
 import code.router.model.MapSettings;
 import code.router.utils.Controller;
 import code.router.utils.View;
@@ -40,11 +40,7 @@ public class ToolBarController implements Controller<ToolBarController.IToolBarV
     mapSettingsModel = new MapSettings();
     MapSettingsChangeEvent mapSettingsChangeEvent = new MapSettingsChangeEvent(mapSettingsModel);
 
-//    view.getNewRouteButton().setOnAction(event -> EventBus.fireEvent(new NewRouteViewEvent()));
-    view.getNewRouteButton().setOnAction(event -> {
-      EventBus.fireEvent(new MaskWindowEvent());
-      runThread();
-    });
+    view.getNewRouteButton().setOnAction(event -> EventBus.fireEvent(new ShowNewRouteDialogEvent()));
 
     view.getToggleGroup().selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
       if (newValue == view.getStartMarkerButton())

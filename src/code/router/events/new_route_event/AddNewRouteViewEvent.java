@@ -7,12 +7,12 @@ import code.router.utils.event.EventType;
 /**
  * Created by razvanolar on 29.12.2016
  */
-public class NewRouteViewEvent extends Event<NewRouteViewEventHandler> {
+public class AddNewRouteViewEvent extends Event<NewRouteViewEventHandler> {
 
   private String title;
   private Component mapComponent;
 
-  public NewRouteViewEvent(String title, Component mapComponent) {
+  public AddNewRouteViewEvent(String title, Component mapComponent) {
     this.title = title;
     this.mapComponent = mapComponent;
   }

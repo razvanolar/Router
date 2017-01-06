@@ -1,8 +1,12 @@
 package code.router.components.map;
 
+import code.router.EventBus;
+import code.router.RouterController;
 import code.router.components.map.chart_content.ChartContentController;
 import code.router.components.map.map_content.MapContentController;
 import code.router.components.map_settings.MapSettingsController;
+import code.router.events.load_resources_events.load_map_event.LoadMapEvent;
+import code.router.events.load_resources_events.load_map_event.LoadMapEventHandler;
 import code.router.utils.Controller;
 import code.router.utils.View;
 
@@ -34,5 +38,12 @@ public class MapController implements Controller<MapController.IMapView> {
     mapContentController.bind(view.getMapContentView());
     chartContentController.bind(view.getChartContentView());
     mapSettingsController.bind(view.getMapSettingsView());
+
+    EventBus.addHandler(LoadMapEvent.TYPE, (LoadMapEventHandler) event -> {
+      if (!equals(RouterController.SELECTED_MAP_CONTROLLER)) {
+        return;
+      }
+      mapContentController.loadMap();
+    });
   }
 }

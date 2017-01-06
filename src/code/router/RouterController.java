@@ -1,16 +1,16 @@
 package code.router;
 
+import code.router.components.utils.EventsListener;
 import code.router.events.load_resources_events.LoadResourcesEvent;
 import code.router.events.load_resources_events.LoadResourcesEventHandler;
 import code.router.events.load_resources_events.load_map_event.LoadMapEvent;
-import code.router.events.mask_unmask_window_event.MaskWindowEvent;
-import code.router.events.mask_unmask_window_event.UnmaskWindowEvent;
-import code.router.events.new_route_event.NewRouteViewEvent;
+import code.router.events.new_route_event.AddNewRouteViewEvent;
 import code.router.utils.Component;
 import code.router.utils.Controller;
 import code.router.utils.View;
 import code.router.utils.factories.ComponentFactory;
 import code.router.utils.types.ComponentTypes;
+import javafx.scene.control.TabPane;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,7 +20,10 @@ import java.util.Map;
  */
 public class RouterController implements Controller<RouterController.IRouterView> {
 
+  public static Object SELECTED_MAP_CONTROLLER;
+
   interface IRouterView extends View {
+    TabPane getTabPane();
   }
 
   private IRouterView routerView;
@@ -45,12 +48,11 @@ public class RouterController implements Controller<RouterController.IRouterView
     // ignore received view object, routerView is computed internally
 
     EventBus.addHandler(LoadResourcesEvent.TYPE, (LoadResourcesEventHandler) event -> {
-      EventBus.fireEvent(new MaskWindowEvent("Loading Resources..."));
-      // when the project state will be loaded from the disk, NewRouteViewEvent will be fired only when no other map views are available
-      EventBus.fireEvent(new NewRouteViewEvent("New Routes View", ComponentFactory.createComponent(ComponentTypes.MAP)));
-      EventBus.fireEvent(new LoadMapEvent());
-      EventBus.fireEvent(new UnmaskWindowEvent());
+      // when the project state will be loaded from the disk, AddNewRouteViewEvent will be fired only when no other map views are available
+      EventBus.fireEvent(new AddNewRouteViewEvent("New Routes View", ComponentFactory.createComponent(ComponentTypes.MAP)));
     });
+
+    new EventsListener();
   }
 
   public View getRouterView() {
