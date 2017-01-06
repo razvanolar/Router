@@ -22,7 +22,6 @@ public enum ComponentTypes {
             RIGHT_TOOL_BAR,
             ROUTES_TREE,
             PROJECTS_TREE,
-            MAP,
             FOOTER};
   }
 }

@@ -1,6 +1,8 @@
 package code.router.components.map.map_content.utils;
 
 import code.router.EventBus;
+import code.router.events.map_height_changed_event.MapHeightChangedEvent;
+import code.router.events.map_height_changed_event.MapHeightChangedEventHandler;
 import code.router.events.markers_events.clear_markers_events.clear_all_markers_event.ClearAllMarkersEvent;
 import code.router.events.markers_events.clear_markers_events.clear_all_markers_event.ClearAllMarkersEventHandler;
 import code.router.events.markers_events.clear_markers_events.clear_elevation_markers_event.ClearElevationMarkersEvent;
@@ -25,11 +27,14 @@ import code.router.events.routes_events.previous_route_event.PreviousRouteEvent;
 import code.router.events.routes_events.previous_route_event.PreviousRouteEventHandler;
 import code.router.events.routes_events.update_elevations_event.UpdateElevationsEvent;
 import code.router.model.Elevation;
+import code.router.utils.event.Event;
 import javafx.scene.web.WebEngine;
 import netscape.javascript.JSObject;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 /**
  * Created by razvanolar on 03.01.2017
@@ -40,11 +45,13 @@ public class MapContentUtils {
   private boolean domLoaded;
   private MaskWindowEvent maskWindowEvent;
   private UnmaskWindowEvent unmaskWindowEvent;
+  private Queue<Event> events;
 
   public MapContentUtils(WebEngine webEngine) {
     this.webEngine = webEngine;
     this.maskWindowEvent = new MaskWindowEvent();
     this.unmaskWindowEvent = new UnmaskWindowEvent();
+    this.events = new LinkedList<>();
     webEngine.setOnAlert(event -> System.out.println("JS: " + event.toString()));
     JSObject window = (JSObject) webEngine.executeScript("window");
     window.setMember("util", this);
@@ -52,6 +59,10 @@ public class MapContentUtils {
   }
 
   private void addHandlers() {
+    EventBus.addHandler(MapHeightChangedEvent.TYPE, (MapHeightChangedEventHandler) event -> {
+      mapHeightChanged(event.getHeight());
+    });
+
     EventBus.addHandler(MapSettingsChangeEvent.TYPE, (MapSettingsChangeEventHandler) event -> {
       if (!isDOMLoaded())
         return;
@@ -118,6 +129,10 @@ public class MapContentUtils {
   }
 
   public void mapHeightChanged(double newHeight) {
+    if (!domLoaded) {
+      events.add(new MapHeightChangedEvent(newHeight));
+      return;
+    }
     int size = 51;
     if (newHeight > size)
       newHeight -= size;
@@ -126,6 +141,10 @@ public class MapContentUtils {
 
   public void setDomLoaded(boolean domLoaded) {
     this.domLoaded = domLoaded;
+    // consume all the events that were fired before the DOM was loaded
+    if (domLoaded) {
+      events.forEach(EventBus::fireEvent);
+    }
   }
 
   /**

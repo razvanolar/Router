@@ -17,7 +17,10 @@ var Options = {
     mapTypeId: google.maps.MapTypeId.ROADMAP
 };
 var map = new google.maps.Map(document.getElementById("map_canvas"), Options);
-var mapRenderer = new google.maps.DirectionsRenderer({suppressMarkers: true});
+var mapRenderer = new google.maps.DirectionsRenderer({
+    suppressMarkers: true,
+    draggable: true
+});
 mapRenderer.setMap(map);
 
 document.findRoute = function () {

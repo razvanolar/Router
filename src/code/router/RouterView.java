@@ -7,6 +7,8 @@ import code.router.events.mask_unmask_window_event.MaskWindowEvent;
 import code.router.events.mask_unmask_window_event.MaskWindowEventHandler;
 import code.router.events.mask_unmask_window_event.UnmaskWindowEvent;
 import code.router.events.mask_unmask_window_event.UnmaskWindowEventHandler;
+import code.router.events.new_route_event.NewRouteViewEvent;
+import code.router.events.new_route_event.NewRouteViewEventHandler;
 import code.router.events.show_projects_tree_event.ShowProjectsTreeEvent;
 import code.router.events.show_projects_tree_event.ShowProjectsTreeEventHandler;
 import code.router.events.show_routes_tree_events.ShowRouteTreeEvent;
@@ -17,6 +19,8 @@ import code.router.utils.types.ComponentTypes;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.control.SplitPane;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.layout.*;
 
 import java.util.Map;
@@ -30,7 +34,7 @@ public class RouterView implements RouterController.IRouterView {
   private SplitPane centerSplitPane;
   private View routesTreeView;
   private View projectsTreeView;
-  private View mapView;
+  private TabPane tabPane;
   private MaskPane maskPane;
 
   private double lastFirstDividerPosition;
@@ -48,11 +52,11 @@ public class RouterView implements RouterController.IRouterView {
     View rightToolBarView = componentsMap.get(ComponentTypes.RIGHT_TOOL_BAR).getView();
     routesTreeView = componentsMap.get(ComponentTypes.ROUTES_TREE).getView();
     projectsTreeView = componentsMap.get(ComponentTypes.PROJECTS_TREE).getView();
-    mapView = componentsMap.get(ComponentTypes.MAP).getView();
     View footerView = componentsMap.get(ComponentTypes.FOOTER).getView();
 
     VBox topContainer = new VBox(menuBarView.asNode(), toolBarView.asNode());
-    centerSplitPane = new SplitPane(mapView.asNode());
+    tabPane = new TabPane();
+    centerSplitPane = new SplitPane(tabPane);
     BorderPane borderContainer = new BorderPane(centerSplitPane);
     mainContainer = new StackPane(borderContainer);
     maskPane = new MaskPane();
@@ -92,6 +96,10 @@ public class RouterView implements RouterController.IRouterView {
     EventBus.addHandler(UnmaskWindowEvent.TYPE, (UnmaskWindowEventHandler) event -> {
       mainContainer.getChildren().remove(maskPane.asNode());
     });
+
+    EventBus.addHandler(NewRouteViewEvent.TYPE, (NewRouteViewEventHandler) event -> {
+      addMapTab(event.getTitle(), event.getMapComponent());
+    });
   }
 
   private void clearLeftItem() {
@@ -106,8 +114,10 @@ public class RouterView implements RouterController.IRouterView {
     }
   }
 
-  public SplitPane getCenterSplitPane() {
-    return centerSplitPane;
+  public void addMapTab(String title, Component component) {
+    Tab tab = new Tab(title, component.getView().asNode());
+    tabPane.getTabs().add(tab);
+    tab.setUserData(component);
   }
 
   @Override
