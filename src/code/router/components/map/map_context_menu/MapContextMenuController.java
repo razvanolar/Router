@@ -8,7 +8,9 @@ import code.router.events.markers_events.clear_markers_events.clear_end_marker_e
 import code.router.events.markers_events.clear_markers_events.clear_intermediate_markers_event.ClearIntermediateMarkersEvent;
 import code.router.events.markers_events.clear_markers_events.clear_start_marker_event.ClearStartMarkerEvent;
 import code.router.events.map_direction_change_event.MapDirectionChangedEvent;
+import code.router.events.routes_events.find_route_event.FindRouteEvent;
 import code.router.events.routes_events.find_route_for_last_2_elevation_markers_event.FindRouteForLast2ElevationMarkersEvent;
+import code.router.events.routes_events.find_route_in_new_window_event.FindRouteInNewWindowEvent;
 import code.router.utils.Controller;
 import code.router.utils.View;
 import javafx.scene.control.CheckBox;
@@ -50,6 +52,14 @@ public class MapContextMenuController implements Controller<MapContextMenuContro
     view.getClearElevationMarkersMenuItem().setOnAction(event -> EventBus.fireEvent(new ClearElevationMarkersEvent()));
 
     view.getClearAllMarkersMenuItem().setOnAction(event -> EventBus.fireEvent(new ClearAllMarkersEvent()));
+
+    view.getFindRouteForStartAndEndMarkersMenuItem().setOnAction(event -> {
+      if (view.getOpenInNewTabCheckBox().isSelected()) {
+        EventBus.fireEvent(new FindRouteInNewWindowEvent());
+      } else {
+        EventBus.fireEvent(new FindRouteEvent());
+      }
+    });
 
     view.getFindRouteForLastTwoElevationMarkersMenuItem().setOnAction(event -> {
       if (view.getOpenInNewTabCheckBox().isSelected()) {

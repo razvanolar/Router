@@ -132,15 +132,7 @@ public class MapContentUtils {
           if (rez != null && rez instanceof String) {
             String string = (String) rez;
             try {
-              String[] split = string.split(",");
-              if (split.length != 4)
-                throw new Exception("Incorrect positions size.");
-              double startLatitude = Double.parseDouble(split[0]);
-              double startLongitude = Double.parseDouble(split[1]);
-              double endLatitude = Double.parseDouble(split[2]);
-              double endLongitude = Double.parseDouble(split[3]);
-              Route route = new Route(new LatLng(startLatitude, startLongitude), new LatLng(endLatitude, endLongitude));
-              EventBus.fireEvent(new ShowNewRouteDialogEvent(route));
+              EventBus.fireEvent(new ShowNewRouteDialogEvent(createRouteFromString(string)));
             } catch (Exception e) {
               System.out.println("Error while parsing last two elevation markers positions. Error message: " + e.getMessage());
               e.printStackTrace();
@@ -158,7 +150,26 @@ public class MapContentUtils {
         }
       }
     }
+  }
 
+  public Route getCurrentRoute() {
+    Object obj = webEngine.executeScript("document.canFindRouteForStartEndMarkers();");
+    if (obj != null && obj instanceof Boolean) {
+      boolean canFindRouteForStartEndMarkers = (Boolean) obj;
+      if (canFindRouteForStartEndMarkers) {
+        obj = webEngine.executeScript("document.getCurrentRoutePositions()");
+        if (obj != null && obj instanceof String) {
+          String string = (String) obj;
+          try {
+            return createRouteFromString(string);
+          } catch (Exception e) {
+            System.out.println("Error while parsing start and end markers positions. Error message: " + e.getMessage());
+            e.printStackTrace();
+          }
+        }
+      }
+    }
+    return null;
   }
 
   public void mapHeightChanged(double newHeight) {
@@ -186,6 +197,17 @@ public class MapContentUtils {
       return false;
     }
     return true;
+  }
+
+  private Route createRouteFromString(String string) throws Exception {
+    String[] split = string.split(",");
+    if (split.length != 4)
+      throw new Exception("Incorrect positions size.");
+    double startLatitude = Double.parseDouble(split[0]);
+    double startLongitude = Double.parseDouble(split[1]);
+    double endLatitude = Double.parseDouble(split[2]);
+    double endLongitude = Double.parseDouble(split[3]);
+    return new Route(new LatLng(startLatitude, startLongitude), new LatLng(endLatitude, endLongitude));
   }
 
   /**

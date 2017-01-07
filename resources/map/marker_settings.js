@@ -160,6 +160,14 @@ document.canFindRouteForLastTwoElevationMarkers = function () {
     return true;
 };
 
+document.canFindRouteForStartEndMarkers = function () {
+    if (!startMarker || !endMarker) {
+        alert("StartMaker and/or EndMarker are not defined.");
+        return false;
+    }
+    return true;
+};
+
 document.cloneStartMarkerFromElevationMarkers = function () {
     var length = elevationMarkers.length;
     var marker = elevationMarkers[length - 2];
@@ -179,11 +187,17 @@ document.clearLastTwoElevationMarkers = function () {
     elevationMarkers.splice(length - 2, 2);
 };
 
+document.getCurrentRoutePositions = function () {
+  return document.getMarkersPositions(startMarker, endMarker);
+};
+
 document.getLastTwoElevationMarkersPositions = function () {
     var length = elevationMarkers.length;
+    return document.getMarkersPositions(elevationMarkers[length - 2], elevationMarkers[length - 1]);
+};
+
+document.getMarkersPositions = function (first, second) {
     var rez = '';
-    var stMark = elevationMarkers[length - 2];
-    var enMark = elevationMarkers[length - 1];
-    rez += stMark.getPosition().lat() + ',' + stMark.getPosition().lng() + ',' + enMark.getPosition().lat() + ',' + enMark.getPosition().lng();
+    rez += first.getPosition().lat() + ',' + first.getPosition().lng() + ',' + second.getPosition().lat() + ',' + second.getPosition().lng();
     return rez;
 };

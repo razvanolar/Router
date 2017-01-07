@@ -8,6 +8,9 @@ import code.router.events.mask_unmask_window_event.MaskWindowEvent;
 import code.router.events.mask_unmask_window_event.UnmaskWindowEvent;
 import code.router.events.routes_events.find_route_event.FindRouteEvent;
 import code.router.events.routes_events.find_route_event.FindRouteEventHandler;
+import code.router.events.routes_events.find_route_in_new_window_event.FindRouteInNewWindowEvent;
+import code.router.events.routes_events.find_route_in_new_window_event.FindRouteInNewWindowEventHandler;
+import code.router.events.show_new_route_dialog_event.ShowNewRouteDialogEvent;
 import code.router.model.Route;
 import code.router.utils.Component;
 import code.router.utils.Controller;
@@ -53,6 +56,15 @@ public class MapContentController implements Controller<MapContentController.IMa
         return;
       utils.onFindRouteEvent(event.getRoute());
     });
+
+    EventBus.addHandler(FindRouteInNewWindowEvent.TYPE, (FindRouteInNewWindowEventHandler) event -> {
+      if (!controller.isActive() || utils == null)
+        return;
+      Route route = utils.getCurrentRoute();
+      if (route != null) {
+        EventBus.fireEvent(new ShowNewRouteDialogEvent(route));
+      }
+    });
   }
 
   public void loadMap(Route route) {
@@ -70,7 +82,6 @@ public class MapContentController implements Controller<MapContentController.IMa
         utils.setDomLoaded(true);
         EventBus.fireEvent(new UnmaskWindowEvent());
         if (route != null) {
-          System.out.println("Loading route -----");
           EventBus.fireEvent(new FindRouteEvent(route));
         }
       }
