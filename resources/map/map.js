@@ -116,9 +116,7 @@ document.addInfoWindowForRoute = function (route) {
     var points = route.overview_path;
     if (!points)
         return;
-    if (routeInfo) {
-        routeInfo.close();
-    }
+    document.clearInfoWindow();
     var infoWindowPosition = parseInt(points.length / 2);
     var distance = document.calculateTotalDistanceForRoute(route);
     routeInfo.setOptions({
@@ -132,6 +130,7 @@ document.addInfoWindowForRoute = function (route) {
 document.nextRoute = function () {
     if (routes_array && current_routes_index < routes_array.length - 1) {
         mapRenderer.setRouteIndex(++current_routes_index);
+        document.addInfoWindowForRoute(routes_array[current_routes_index]);
         document.getElevationsForRoute(routes_array[current_routes_index]);
         alert("Route index changed to " + current_routes_index + " from " + routes_array.length);
     }
@@ -140,6 +139,7 @@ document.nextRoute = function () {
 document.prevRoute = function () {
     if (current_routes_index > 0) {
         mapRenderer.setRouteIndex(--current_routes_index);
+        document.addInfoWindowForRoute(routes_array[current_routes_index]);
         document.getElevationsForRoute(routes_array[current_routes_index]);
         alert("Route index changed to " + current_routes_index + " from " + routes_array.length);
     }
@@ -158,6 +158,12 @@ document.clearRenderer = function () {
     mapRenderer.setMap(map);
     routes_array = null;
     current_routes_index = -1;
+};
+
+document.clearInfoWindow = function () {
+    if (routeInfo) {
+        routeInfo.close();
+    }
 };
 
 document.calculateTotalDistanceForRoute = function (route) {

@@ -110,6 +110,7 @@ public class MapContentUtils {
   public void clearAllFromMap() {
     webEngine.executeScript("document.clearAllMarkers();");
     webEngine.executeScript("document.clearRenderer();");
+    webEngine.executeScript("document.clearInfoWindow();");
     EventBus.fireEvent(new ClearChartEvent());
   }
 
