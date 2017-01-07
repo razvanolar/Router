@@ -16,6 +16,7 @@ import code.router.events.show_routes_tree_events.ShowRouteTreeEvent;
 import code.router.events.show_routes_tree_events.ShowRouteTreeEventHandler;
 import code.router.utils.Component;
 import code.router.utils.View;
+import code.router.utils.factories.ComponentFactory;
 import code.router.utils.types.ComponentTypes;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
@@ -90,7 +91,7 @@ public class RouterView implements RouterController.IRouterView {
     });
 
     EventBus.addHandler(MaskWindowEvent.TYPE, (MaskWindowEventHandler) event -> {
-      maskPane.setMessageText(event.getMessage());
+      maskPane.setTextMessage(event.getMessage());
       mainContainer.getChildren().add(maskPane.asNode());
     });
 
@@ -98,9 +99,7 @@ public class RouterView implements RouterController.IRouterView {
       mainContainer.getChildren().remove(maskPane.asNode());
     });
 
-    EventBus.addHandler(AddNewRouteViewEvent.TYPE, (NewRouteViewEventHandler) event -> {
-      addMapTab(event.getTitle(), event.getMapComponent());
-    });
+    EventBus.addHandler(AddNewRouteViewEvent.TYPE, (NewRouteViewEventHandler) this::addMapTab);
   }
 
   private void clearLeftItem() {
@@ -115,14 +114,17 @@ public class RouterView implements RouterController.IRouterView {
     }
   }
 
-  public void addMapTab(String title, Component component) {
-    Tab tab = new Tab(title, component.getView().asNode());
+  private void addMapTab(AddNewRouteViewEvent event) {
+    Component component = ComponentFactory.createComponent(ComponentTypes.MAP);
+    if (component == null)
+      return;
+    Tab tab = new Tab(event.getTitle(), component.getView().asNode());
     tabPane.getTabs().add(tab);
     tab.setUserData(component.getController());
     tabPane.getSelectionModel().select(tab);
 
     RouterController.SELECTED_MAP_CONTROLLER = component.getController();
-    EventBus.fireEvent(new LoadMapEvent());
+    EventBus.fireEvent(new LoadMapEvent(event.getRouteToBeLoaded()));
   }
 
   public TabPane getTabPane() {

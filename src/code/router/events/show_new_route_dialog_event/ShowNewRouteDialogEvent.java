@@ -1,5 +1,6 @@
 package code.router.events.show_new_route_dialog_event;
 
+import code.router.model.Route;
 import code.router.utils.event.Event;
 import code.router.utils.event.EventType;
 
@@ -8,7 +9,20 @@ import code.router.utils.event.EventType;
  */
 public class ShowNewRouteDialogEvent extends Event<ShowNewRouteDialogEventHandler> {
 
+  public Route routeToBeLoaded;
+
+  public ShowNewRouteDialogEvent() {
+  }
+
+  public ShowNewRouteDialogEvent(Route routeToBeLoaded) {
+    this.routeToBeLoaded = routeToBeLoaded;
+  }
+
   public static final EventType<ShowNewRouteDialogEventHandler> TYPE = new EventType<ShowNewRouteDialogEventHandler>();
+
+  public Route getRouteToBeLoaded() {
+    return routeToBeLoaded;
+  }
 
   @Override
   public EventType getAssociatedType() {

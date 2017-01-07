@@ -27,30 +27,38 @@ import java.util.List;
  */
 public class ChartContentController implements Controller<ChartContentController.IChartContentView> {
 
+  private EventHandler<MouseEvent> mouseEnteredEvent;
+  private EventHandler<MouseEvent> mouseExitedEvent;
+  private EventHandler<MouseEvent> mouseClickedEvent;
+
   public interface IChartContentView extends View {
     LineChart<Number, Number> getLineChart();
     NumberAxis getyAxis();
   }
 
+  private IChartContentView view;
+
   @Override
   public void bind(IChartContentView view) {
+    this.view = view;
+
     setupCustomTooltipBehavior(100, 10000, 200);
 
-    EventHandler<MouseEvent> mouseEnteredEvent = mouseEvent -> {
+    mouseEnteredEvent = mouseEvent -> {
       if (mouseEvent.getSource() instanceof Shape) {
         Shape shape = (Shape) mouseEvent.getSource();
         shape.setFill(Color.YELLOWGREEN);
       }
     };
 
-    EventHandler<MouseEvent> mouseExitedEvent = mouseEvent -> {
+    mouseExitedEvent = mouseEvent -> {
       if (mouseEvent.getSource() instanceof Shape) {
         Shape shape = (Shape) mouseEvent.getSource();
         shape.setFill(Color.DARKBLUE);
       }
     };
 
-    EventHandler<MouseEvent> mouseClickedEvent = event -> {
+    mouseClickedEvent = event -> {
       if (event.getSource() instanceof Shape) {
         Shape shape = (Shape) event.getSource();
         if (shape.getUserData() != null && shape.getUserData() instanceof Elevation) {
@@ -61,34 +69,42 @@ public class ChartContentController implements Controller<ChartContentController
     };
 
     EventBus.addHandler(UpdateElevationsEvent.TYPE, (UpdateElevationsEventHandler) event -> {
-      view.getLineChart().getData().clear();
-      XYChart.Series<Number, Number> series = new XYChart.Series<>();
-      series.setName("Elevation");
-      List<Elevation> elevations = event.getElevations();
-      double minElevation = Double.MAX_VALUE;
-      double maxElevation = Double.MIN_VALUE;
-      for (int i = 0; i < elevations.size(); i ++) {
-        Elevation elevation = elevations.get(i);
-        if (elevation.getElevation() < minElevation)
-          minElevation = elevation.getElevation();
-        if (maxElevation > elevation.getElevation())
-          maxElevation = elevation.getElevation();
-        XYChart.Data<Number, Number> data = new XYChart.Data<>(i + 1, elevation.getElevation());
-        Circle circle = new Circle(3);
-        circle.setFill(Color.DARKBLUE);
-        circle.setOnMouseEntered(mouseEnteredEvent);
-        circle.setOnMouseExited(mouseExitedEvent);
-        circle.setOnMouseClicked(mouseClickedEvent);
-        data.setNode(circle);
-        series.getData().add(data);
 
-        Tooltip tooltip = new Tooltip(elevation.getElevation() + " m\nLat: " + elevation.getLatitude() + "\nLng: " + elevation.getLongitude());
-        Tooltip.install(circle, tooltip);
-        circle.setUserData(elevation);
-      }
-
-      view.getLineChart().getData().add(series);
     });
+  }
+
+  public void updateElevationChart(UpdateElevationsEvent event) {
+    view.getLineChart().getData().clear();
+    XYChart.Series<Number, Number> series = new XYChart.Series<>();
+    series.setName("Elevation");
+    List<Elevation> elevations = event.getElevations();
+    double minElevation = Double.MAX_VALUE;
+    double maxElevation = Double.MIN_VALUE;
+    for (int i = 0; i < elevations.size(); i ++) {
+      Elevation elevation = elevations.get(i);
+      if (elevation.getElevation() < minElevation)
+        minElevation = elevation.getElevation();
+      if (maxElevation > elevation.getElevation())
+        maxElevation = elevation.getElevation();
+      XYChart.Data<Number, Number> data = new XYChart.Data<>(i + 1, elevation.getElevation());
+      Circle circle = new Circle(3);
+      circle.setFill(Color.DARKBLUE);
+      circle.setOnMouseEntered(mouseEnteredEvent);
+      circle.setOnMouseExited(mouseExitedEvent);
+      circle.setOnMouseClicked(mouseClickedEvent);
+      data.setNode(circle);
+      series.getData().add(data);
+
+      Tooltip tooltip = new Tooltip(elevation.getElevation() + " m\nLat: " + elevation.getLatitude() + "\nLng: " + elevation.getLongitude());
+      Tooltip.install(circle, tooltip);
+      circle.setUserData(elevation);
+    }
+
+    view.getLineChart().getData().add(series);
+  }
+
+  public void clearChartData() {
+    this.view.getLineChart().getData().clear();
   }
 
   /**

@@ -29,8 +29,7 @@ public class EventsListener {
       dialog.setContent(newRouteDialogView.asNode());
       dialog.getOkButton().setOnAction(event1 -> {
         dialog.close();
-        System.out.println("AddNewRouteViewEvent");
-        EventBus.fireEvent(new AddNewRouteViewEvent(newRouteDialogController.getTabName(), ComponentFactory.createComponent(ComponentTypes.MAP)));
+        EventBus.fireEvent(new AddNewRouteViewEvent(newRouteDialogController.getTabName(), event.getRouteToBeLoaded()));
       });
       dialog.show();
     });

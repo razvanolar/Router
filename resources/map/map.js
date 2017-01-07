@@ -56,12 +56,12 @@ document.findRoute = function () {
             document.getElevationsForRoute(result.routes[0]);
 
             // only for debugging
-            result.routes.forEach(function (route) {
-                alert("paths: " + route.overview_path.length);
-                route.overview_path.forEach(function (path) {
-                    alert(path.lat() + " , " + path.lng());
-                });
-            });
+            // result.routes.forEach(function (route) {
+            //     alert("paths: " + route.overview_path.length);
+            //     route.overview_path.forEach(function (path) {
+            //         alert(path.lat() + " , " + path.lng());
+            //     });
+            // });
         }
     });
 };

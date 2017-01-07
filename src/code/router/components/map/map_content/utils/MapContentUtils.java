@@ -1,32 +1,21 @@
 package code.router.components.map.map_content.utils;
 
 import code.router.EventBus;
+import code.router.events.clear_chart_event.ClearChartEvent;
 import code.router.events.map_height_changed_event.MapHeightChangedEvent;
 import code.router.events.map_height_changed_event.MapHeightChangedEventHandler;
-import code.router.events.markers_events.clear_markers_events.clear_all_markers_event.ClearAllMarkersEvent;
-import code.router.events.markers_events.clear_markers_events.clear_all_markers_event.ClearAllMarkersEventHandler;
-import code.router.events.markers_events.clear_markers_events.clear_elevation_markers_event.ClearElevationMarkersEvent;
-import code.router.events.markers_events.clear_markers_events.clear_elevation_markers_event.ClearElevationMarkersEventHandler;
-import code.router.events.markers_events.clear_markers_events.clear_end_marker_event.ClearEndMarkerEvent;
-import code.router.events.markers_events.clear_markers_events.clear_end_marker_event.ClearEndMarkerEventHandler;
-import code.router.events.markers_events.clear_markers_events.clear_intermediate_markers_event.ClearIntermediateMarkersEvent;
-import code.router.events.markers_events.clear_markers_events.clear_intermediate_markers_event.ClearIntermediateMarkersEventHandler;
-import code.router.events.markers_events.clear_markers_events.clear_start_marker_event.ClearStartMarkerEvent;
-import code.router.events.markers_events.clear_markers_events.clear_start_marker_event.ClearStartMarkerEventHandler;
 import code.router.events.markers_events.show_elevation_marker_event.ShowElevationMarkerEvent;
-import code.router.events.markers_events.show_elevation_marker_event.ShowElevationMarkerEventHandler;
 import code.router.events.routes_events.find_route_event.FindRouteEvent;
-import code.router.events.routes_events.find_route_event.FindRouteEventHandler;
 import code.router.events.map_settings_change_event.MapSettingsChangeEvent;
 import code.router.events.map_settings_change_event.MapSettingsChangeEventHandler;
 import code.router.events.mask_unmask_window_event.MaskWindowEvent;
 import code.router.events.mask_unmask_window_event.UnmaskWindowEvent;
-import code.router.events.routes_events.next_route_event.NextRouteEvent;
-import code.router.events.routes_events.next_route_event.NextRouteEventHandler;
-import code.router.events.routes_events.previous_route_event.PreviousRouteEvent;
-import code.router.events.routes_events.previous_route_event.PreviousRouteEventHandler;
+import code.router.events.routes_events.find_route_for_last_2_elevation_markers_event.FindRouteForLast2ElevationMarkersEvent;
 import code.router.events.routes_events.update_elevations_event.UpdateElevationsEvent;
+import code.router.events.show_new_route_dialog_event.ShowNewRouteDialogEvent;
 import code.router.model.Elevation;
+import code.router.model.LatLng;
+import code.router.model.Route;
 import code.router.utils.event.Event;
 import javafx.scene.web.WebEngine;
 import netscape.javascript.JSObject;
@@ -69,63 +58,106 @@ public class MapContentUtils {
       String name = event.getMapSettings().getMarkerType().name();
       webEngine.executeScript("document.changeMarkerType('" + name.toLowerCase() + "');");
     });
-
-    EventBus.addHandler(FindRouteEvent.TYPE, (FindRouteEventHandler) event -> {
-      if (!isDOMLoaded())
-        return;
-      webEngine.executeScript("document.findRoute();");
-    });
-
-    EventBus.addHandler(PreviousRouteEvent.TYPE, (PreviousRouteEventHandler) event -> {
-      if (!isDOMLoaded())
-        return;
-      webEngine.executeScript("document.prevRoute();");
-    });
-
-    EventBus.addHandler(NextRouteEvent.TYPE, (NextRouteEventHandler) event -> {
-      if (!isDOMLoaded())
-        return;
-      webEngine.executeScript("document.nextRoute();");
-    });
-
-    EventBus.addHandler(ClearStartMarkerEvent.TYPE, (ClearStartMarkerEventHandler) event -> {
-      webEngine.executeScript("document.clearStartMarker();");
-      webEngine.executeScript("document.clearRenderer();");
-    });
-
-    EventBus.addHandler(ClearEndMarkerEvent.TYPE, (ClearEndMarkerEventHandler) event -> {
-      webEngine.executeScript("document.clearEndMarker();");
-      webEngine.executeScript("document.clearRenderer();");
-    });
-
-    EventBus.addHandler(ClearIntermediateMarkersEvent.TYPE, (ClearIntermediateMarkersEventHandler) event -> {
-      webEngine.executeScript("document.clearIntermediateMarkers();");
-    });
-
-    EventBus.addHandler(ClearElevationMarkersEvent.TYPE, (ClearElevationMarkersEventHandler) event -> {
-      webEngine.executeScript("document.clearElevationMarkers();");
-    });
-
-    EventBus.addHandler(ClearAllMarkersEvent.TYPE, (ClearAllMarkersEventHandler) event -> {
-      webEngine.executeScript("document.clearAllMarkers();");
-      webEngine.executeScript("document.clearRenderer();");
-    });
-
-    EventBus.addHandler(ShowElevationMarkerEvent.TYPE, (ShowElevationMarkerEventHandler) event -> {
-      Elevation elevation = event.getElevation();
-      double lat = elevation.getLatitude();
-      double lng = elevation.getLongitude();
-      int label = (int) elevation.getElevation();
-      webEngine.executeScript("document.addElevationMarker(" + lat + ", " + lng + ", '" + label + "');");
-    });
   }
 
-  private boolean isDOMLoaded() {
-    if (!domLoaded) {
-      System.out.println("DOM is not fully loaded");
-      return false;
+  public void onFindRouteEvent(Route route) {
+    if (!isDOMLoaded())
+      return;
+    if (route != null) {
+      LatLng start = route.getFromPoint();
+      LatLng end = route.getToPoint();
+      webEngine.executeScript("document.addStartMarker(" + start.getLatitude() + ", " + start.getLongitude() + ");");
+      webEngine.executeScript("document.addEndMarker(" + end.getLatitude() + ", " + end.getLongitude() + ");");
     }
-    return true;
+    webEngine.executeScript("document.findRoute();");
+  }
+
+  public void getPreviousRoute() {
+    if (!isDOMLoaded())
+      return;
+    webEngine.executeScript("document.prevRoute();");
+  }
+
+  public void getNextRoute() {
+    if (!isDOMLoaded())
+      return;
+    webEngine.executeScript("document.nextRoute();");
+  }
+
+  public void clearStartMarker() {
+    webEngine.executeScript("document.clearStartMarker();");
+    webEngine.executeScript("document.clearRenderer();");
+  }
+
+  public void clearEndMarker() {
+    webEngine.executeScript("document.clearEndMarker();");
+    webEngine.executeScript("document.clearRenderer();");
+  }
+
+  public void clearIntermediateMarkers() {
+    webEngine.executeScript("document.clearIntermediateMarkers();");
+  }
+
+  public void clearElevationMarkers() {
+    webEngine.executeScript("document.clearElevationMarkers();");
+  }
+
+  public void clearAllMarkers() {
+    webEngine.executeScript("document.clearAllMarkers();");
+    webEngine.executeScript("document.clearRenderer();");
+  }
+
+  public void clearAllFromMap() {
+    webEngine.executeScript("document.clearAllMarkers();");
+    webEngine.executeScript("document.clearRenderer();");
+    EventBus.fireEvent(new ClearChartEvent());
+  }
+
+  public void showElevationMarker(ShowElevationMarkerEvent event) {
+    Elevation elevation = event.getElevation();
+    double lat = elevation.getLatitude();
+    double lng = elevation.getLongitude();
+    int label = (int) elevation.getElevation();
+    webEngine.executeScript("document.addElevationMarker(" + lat + ", " + lng + ", '" + label + "');");
+  }
+
+  public void findRouteForLastTwoElevationMarkers(FindRouteForLast2ElevationMarkersEvent event) {
+    Object result = webEngine.executeScript("document.canFindRouteForLastTwoElevationMarkers();");
+    if (result != null && result instanceof Boolean) {
+      boolean res = (Boolean) result;
+      if (res) {
+        if (event.isInNewWindow()) {
+          Object rez = webEngine.executeScript("document.getLastTwoElevationMarkersPositions();");
+          if (rez != null && rez instanceof String) {
+            String string = (String) rez;
+            try {
+              String[] split = string.split(",");
+              if (split.length != 4)
+                throw new Exception("Incorrect positions size.");
+              double startLatitude = Double.parseDouble(split[0]);
+              double startLongitude = Double.parseDouble(split[1]);
+              double endLatitude = Double.parseDouble(split[2]);
+              double endLongitude = Double.parseDouble(split[3]);
+              Route route = new Route(new LatLng(startLatitude, startLongitude), new LatLng(endLatitude, endLongitude));
+              EventBus.fireEvent(new ShowNewRouteDialogEvent(route));
+            } catch (Exception e) {
+              System.out.println("Error while parsing last two elevation markers positions. Error message: " + e.getMessage());
+              e.printStackTrace();
+            }
+          } else {
+            System.out.println("Unable to retrieve last two elevation markers positions");
+          }
+        } else {
+          webEngine.executeScript("document.clearStartMarker();document.clearEndMarker();");
+          webEngine.executeScript("document.cloneStartMarkerFromElevationMarkers();");
+          webEngine.executeScript("document.cloneEndMarkerFromElevationMarkers();");
+          webEngine.executeScript("document.clearLastTwoElevationMarkers();");
+          System.out.println("fire FindRouteEvent in same window");
+          EventBus.fireEvent(new FindRouteEvent());
+        }
+      }
+    }
+
   }
 
   public void mapHeightChanged(double newHeight) {
@@ -145,6 +177,14 @@ public class MapContentUtils {
     if (domLoaded) {
       events.forEach(EventBus::fireEvent);
     }
+  }
+
+  private boolean isDOMLoaded() {
+    if (!domLoaded) {
+      System.out.println("DOM is not fully loaded");
+      return false;
+    }
+    return true;
   }
 
   /**

@@ -14,6 +14,9 @@ var intermediateMarkers = [];
 var elevationMarkers = [];
 var markerType = NONE_MARKER;
 
+var startMarkerIconPath = 'start_marker.png';
+var endMarkerIconPath = 'end_marker.png';
+
 google.maps.event.addListener(map, "click", function (event) {
     // util.test(event.latLng.lat(), event.latLng.lng());
     var latLng = event.latLng;
@@ -46,7 +49,7 @@ document.addStartMarker = function (lat, lng) {
         title: 'Start',
         draggable: true,
         icon: {
-            url: 'start_marker.png'
+            url: startMarkerIconPath
         }
     });
 };
@@ -62,7 +65,7 @@ document.addEndMarker = function (lat, lng) {
         title: 'End',
         draggable: true,
         icon: {
-            url: 'end_marker.png'
+            url: endMarkerIconPath
         }
     });
 };
@@ -107,17 +110,11 @@ document.addElevationMarker = function (lat, lng, label) {
 };
 
 document.clearStartMarker = function () {
-    if (startMarker) {
-        startMarker.setMap(null);
-        startMarker = null;
-    }
+    document.clearMarker(startMarker);
 };
 
 document.clearEndMarker = function () {
-    if (endMarker) {
-        endMarker.setMap(null);
-        endMarker = null;
-    }
+    document.clearMarker(endMarker);
 };
 
 document.clearIntermediateMarkers = function () {
@@ -136,9 +133,57 @@ document.clearElevationMarkers = function () {
     elevationMarkers = [];
 };
 
+document.clearMarker = function (marker) {
+    if (marker) {
+        marker.setMap(null);
+        marker = null;
+    }
+};
+
 document.clearAllMarkers = function () {
     document.clearStartMarker();
     document.clearEndMarker();
     document.clearIntermediateMarkers();
     document.clearElevationMarkers();
+};
+
+document.canFindRouteForLastTwoElevationMarkers = function () {
+    if (!elevationMarkers || elevationMarkers.length < 2) {
+        alert("There should be at least two elevation markers defined in order to complete this action");
+        return false;
+    }
+    var length = elevationMarkers.length;
+    if (!elevationMarkers[length - 1] || !elevationMarkers[length - 2]) {
+        alert("There should be at least two elevation markers defined in order to complete this action");
+        return false;
+    }
+    return true;
+};
+
+document.cloneStartMarkerFromElevationMarkers = function () {
+    var length = elevationMarkers.length;
+    var marker = elevationMarkers[length - 2];
+    document.addStartMarker(marker.getPosition().lat(), marker.getPosition().lng());
+};
+
+document.cloneEndMarkerFromElevationMarkers = function () {
+    var length = elevationMarkers.length;
+    var marker = elevationMarkers[length - 1];
+    document.addEndMarker(marker.getPosition().lat(), marker.getPosition().lng());
+};
+
+document.clearLastTwoElevationMarkers = function () {
+    var length = elevationMarkers.length;
+    document.clearMarker(elevationMarkers[length - 2]);
+    document.clearMarker(elevationMarkers[length - 1]);
+    elevationMarkers.splice(length - 2, 2);
+};
+
+document.getLastTwoElevationMarkersPositions = function () {
+    var length = elevationMarkers.length;
+    var rez = '';
+    var stMark = elevationMarkers[length - 2];
+    var enMark = elevationMarkers[length - 1];
+    rez += stMark.getPosition().lat() + ',' + stMark.getPosition().lng() + ',' + enMark.getPosition().lat() + ',' + enMark.getPosition().lng();
+    return rez;
 };

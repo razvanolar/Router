@@ -34,8 +34,12 @@ public class MaskPane implements View {
     mainContainer.getStyleClass().add(RouterConstants.MASK_PANE_CLASS);
   }
 
-  public void setMessageText(String text) {
+  public void setTextMessage(String text) {
     this.messageLabel.setText(text);
+  }
+
+  public String getTextMessage() {
+    return this.messageLabel.getText();
   }
 
   @Override

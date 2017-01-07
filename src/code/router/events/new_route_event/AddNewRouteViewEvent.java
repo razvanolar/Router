@@ -1,6 +1,6 @@
 package code.router.events.new_route_event;
 
-import code.router.utils.Component;
+import code.router.model.Route;
 import code.router.utils.event.Event;
 import code.router.utils.event.EventType;
 
@@ -10,11 +10,15 @@ import code.router.utils.event.EventType;
 public class AddNewRouteViewEvent extends Event<NewRouteViewEventHandler> {
 
   private String title;
-  private Component mapComponent;
+  private Route routeToBeLoaded;
 
-  public AddNewRouteViewEvent(String title, Component mapComponent) {
+  public AddNewRouteViewEvent(String title) {
     this.title = title;
-    this.mapComponent = mapComponent;
+  }
+
+  public AddNewRouteViewEvent(String title, Route routeToBeLoaded) {
+    this.title = title;
+    this.routeToBeLoaded = routeToBeLoaded;
   }
 
   public static EventType<NewRouteViewEventHandler> TYPE = new EventType<>();
@@ -23,8 +27,8 @@ public class AddNewRouteViewEvent extends Event<NewRouteViewEventHandler> {
     return title;
   }
 
-  public Component getMapComponent() {
-    return mapComponent;
+  public Route getRouteToBeLoaded() {
+    return routeToBeLoaded;
   }
 
   @Override

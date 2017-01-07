@@ -3,7 +3,6 @@ package code.router;
 import code.router.components.utils.EventsListener;
 import code.router.events.load_resources_events.LoadResourcesEvent;
 import code.router.events.load_resources_events.LoadResourcesEventHandler;
-import code.router.events.load_resources_events.load_map_event.LoadMapEvent;
 import code.router.events.new_route_event.AddNewRouteViewEvent;
 import code.router.utils.Component;
 import code.router.utils.Controller;
@@ -47,9 +46,15 @@ public class RouterController implements Controller<RouterController.IRouterView
   public void bind(IRouterView view) {
     // ignore received view object, routerView is computed internally
 
+    routerView.getTabPane().getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+      if (newValue != null && newValue.getUserData() != null) {
+        SELECTED_MAP_CONTROLLER = newValue.getUserData();
+      }
+    });
+
     EventBus.addHandler(LoadResourcesEvent.TYPE, (LoadResourcesEventHandler) event -> {
       // when the project state will be loaded from the disk, AddNewRouteViewEvent will be fired only when no other map views are available
-      EventBus.fireEvent(new AddNewRouteViewEvent("New Routes View", ComponentFactory.createComponent(ComponentTypes.MAP)));
+      EventBus.fireEvent(new AddNewRouteViewEvent("New Routes View"));
     });
 
     new EventsListener();

@@ -5,8 +5,32 @@ import code.router.RouterController;
 import code.router.components.map.chart_content.ChartContentController;
 import code.router.components.map.map_content.MapContentController;
 import code.router.components.map_settings.MapSettingsController;
+import code.router.events.clear_all_from_map_event.ClearAllFromMapEvent;
+import code.router.events.clear_all_from_map_event.ClearAllFromMapEventHandler;
+import code.router.events.clear_chart_event.ClearChartEvent;
+import code.router.events.clear_chart_event.ClearChartEventHandler;
 import code.router.events.load_resources_events.load_map_event.LoadMapEvent;
 import code.router.events.load_resources_events.load_map_event.LoadMapEventHandler;
+import code.router.events.markers_events.clear_markers_events.clear_all_markers_event.ClearAllMarkersEvent;
+import code.router.events.markers_events.clear_markers_events.clear_all_markers_event.ClearAllMarkersEventHandler;
+import code.router.events.markers_events.clear_markers_events.clear_elevation_markers_event.ClearElevationMarkersEvent;
+import code.router.events.markers_events.clear_markers_events.clear_elevation_markers_event.ClearElevationMarkersEventHandler;
+import code.router.events.markers_events.clear_markers_events.clear_end_marker_event.ClearEndMarkerEvent;
+import code.router.events.markers_events.clear_markers_events.clear_end_marker_event.ClearEndMarkerEventHandler;
+import code.router.events.markers_events.clear_markers_events.clear_intermediate_markers_event.ClearIntermediateMarkersEvent;
+import code.router.events.markers_events.clear_markers_events.clear_intermediate_markers_event.ClearIntermediateMarkersEventHandler;
+import code.router.events.markers_events.clear_markers_events.clear_start_marker_event.ClearStartMarkerEvent;
+import code.router.events.markers_events.clear_markers_events.clear_start_marker_event.ClearStartMarkerEventHandler;
+import code.router.events.markers_events.show_elevation_marker_event.ShowElevationMarkerEvent;
+import code.router.events.markers_events.show_elevation_marker_event.ShowElevationMarkerEventHandler;
+import code.router.events.routes_events.find_route_for_last_2_elevation_markers_event.FindRouteForLast2ElevationMarkersEvent;
+import code.router.events.routes_events.find_route_for_last_2_elevation_markers_event.FindRouteForLast2ElevationMarkersEventHandler;
+import code.router.events.routes_events.next_route_event.NextRouteEvent;
+import code.router.events.routes_events.next_route_event.NextRouteEventHandler;
+import code.router.events.routes_events.previous_route_event.PreviousRouteEvent;
+import code.router.events.routes_events.previous_route_event.PreviousRouteEventHandler;
+import code.router.events.routes_events.update_elevations_event.UpdateElevationsEvent;
+import code.router.events.routes_events.update_elevations_event.UpdateElevationsEventHandler;
 import code.router.utils.Controller;
 import code.router.utils.View;
 
@@ -39,11 +63,85 @@ public class MapController implements Controller<MapController.IMapView> {
     chartContentController.bind(view.getChartContentView());
     mapSettingsController.bind(view.getMapSettingsView());
 
+    mapContentController.injectParentController(this);
+
     EventBus.addHandler(LoadMapEvent.TYPE, (LoadMapEventHandler) event -> {
-      if (!equals(RouterController.SELECTED_MAP_CONTROLLER)) {
-        return;
-      }
-      mapContentController.loadMap();
+      if (!isActive()) { return; }
+      mapContentController.loadMap(event.getRoute());
     });
+
+    EventBus.addHandler(UpdateElevationsEvent.TYPE, (UpdateElevationsEventHandler) event -> {
+      if (!isActive()) { return; }
+      chartContentController.updateElevationChart(event);
+    });
+
+    EventBus.addHandler(PreviousRouteEvent.TYPE, (PreviousRouteEventHandler) event -> {
+      if (!isActive()) { return; }
+      if (mapContentController.getUtils() != null)
+        mapContentController.getUtils().getPreviousRoute();
+    });
+
+    EventBus.addHandler(NextRouteEvent.TYPE, (NextRouteEventHandler) event -> {
+      if (!isActive()) { return; }
+      if (mapContentController.getUtils() != null)
+        mapContentController.getUtils().getNextRoute();
+    });
+
+    EventBus.addHandler(ClearStartMarkerEvent.TYPE, (ClearStartMarkerEventHandler) event -> {
+      if (!isActive()) { return; }
+      if (mapContentController.getUtils() != null)
+        mapContentController.getUtils().clearStartMarker();
+    });
+
+    EventBus.addHandler(ClearEndMarkerEvent.TYPE, (ClearEndMarkerEventHandler) event -> {
+      if (!isActive()) { return; }
+      if (mapContentController.getUtils() != null)
+        mapContentController.getUtils().clearEndMarker();
+    });
+
+    EventBus.addHandler(ClearIntermediateMarkersEvent.TYPE, (ClearIntermediateMarkersEventHandler) event -> {
+      if (!isActive()) { return; }
+      if (mapContentController.getUtils() != null)
+        mapContentController.getUtils().clearIntermediateMarkers();
+    });
+
+    EventBus.addHandler(ClearElevationMarkersEvent.TYPE, (ClearElevationMarkersEventHandler) event -> {
+      if (!isActive()) { return; }
+      if (mapContentController.getUtils() != null)
+        mapContentController.getUtils().clearElevationMarkers();
+    });
+
+    EventBus.addHandler(ClearAllMarkersEvent.TYPE, (ClearAllMarkersEventHandler) event -> {
+      if (!isActive()) { return; }
+      if (mapContentController.getUtils() != null)
+        mapContentController.getUtils().clearAllMarkers();
+    });
+
+    EventBus.addHandler(ClearAllFromMapEvent.TYPE, (ClearAllFromMapEventHandler) event -> {
+      if (!isActive()) { return; }
+      if (mapContentController.getUtils() != null)
+        mapContentController.getUtils().clearAllFromMap();
+    });
+
+    EventBus.addHandler(ClearChartEvent.TYPE, (ClearChartEventHandler) event -> {
+      if (!isActive()) { return; }
+      chartContentController.clearChartData();
+    });
+
+    EventBus.addHandler(ShowElevationMarkerEvent.TYPE, (ShowElevationMarkerEventHandler) event -> {
+      if (!isActive()) { return; }
+      if (mapContentController.getUtils() != null)
+        mapContentController.getUtils().showElevationMarker(event);
+    });
+
+    EventBus.addHandler(FindRouteForLast2ElevationMarkersEvent.TYPE, (FindRouteForLast2ElevationMarkersEventHandler) event -> {
+      if (!isActive()) { return; }
+      if (mapContentController.getUtils() != null)
+        mapContentController.getUtils().findRouteForLastTwoElevationMarkers(event);
+    });
+  }
+
+  public boolean isActive() {
+    return equals(RouterController.SELECTED_MAP_CONTROLLER);
   }
 }

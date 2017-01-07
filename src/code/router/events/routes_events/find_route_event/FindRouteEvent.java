@@ -1,5 +1,6 @@
 package code.router.events.routes_events.find_route_event;
 
+import code.router.model.Route;
 import code.router.utils.event.Event;
 import code.router.utils.event.EventType;
 
@@ -8,7 +9,20 @@ import code.router.utils.event.EventType;
  */
 public class FindRouteEvent extends Event<FindRouteEventHandler> {
 
+  public Route route;
+
+  public FindRouteEvent() {
+  }
+
+  public FindRouteEvent(Route route) {
+    this.route = route;
+  }
+
   public static final EventType<FindRouteEventHandler> TYPE = new EventType<>();
+
+  public Route getRoute() {
+    return route;
+  }
 
   @Override
   public EventType getAssociatedType() {

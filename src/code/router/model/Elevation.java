@@ -6,13 +6,11 @@ package code.router.model;
 public class Elevation {
 
   private double elevation;
-  private double latitude;
-  private double longitude;
+  private LatLng latLng;
 
   public Elevation(double elevation, double latitude, double longitude) {
     this.elevation = elevation;
-    this.latitude = latitude;
-    this.longitude = longitude;
+    this.latLng = new LatLng(latitude, longitude);
   }
 
   public double getElevation() {
@@ -20,10 +18,10 @@ public class Elevation {
   }
 
   public double getLatitude() {
-    return latitude;
+    return latLng.getLatitude();
   }
 
   public double getLongitude() {
-    return longitude;
+    return latLng.getLongitude();
   }
 }

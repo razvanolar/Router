@@ -58,6 +58,8 @@ public class MapView implements MapController.IMapView {
     mapAndChartSplitPane.setOrientation(Orientation.HORIZONTAL);
     mapAndChartSplitPane.setDividerPositions(mapAndChartSplitLastDividerPosition);
     mainSplitPane.setOrientation(Orientation.HORIZONTAL);
+
+    SplitPane.setResizableWithParent(chartContentView.asNode(), false);
   }
 
   private void addListeners() {

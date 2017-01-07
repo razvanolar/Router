@@ -16,12 +16,17 @@ public class MapContextMenuView implements MapContextMenuController.IMapContextM
   private MenuItem clearIntermediateMarkersMenuItem;
   private MenuItem clearElevationMarkersMenuItem;
   private MenuItem clearAllMarkersMenuItem;
+  private MenuItem findRouteForLastTwoElevationMarkersMenuItem;
+  private MenuItem findRouteForStartAndEndMarkersMenuItem;
+  private MenuItem clearAllFromMapMenuItem;
+  private CheckBox openInNewTabCheckBox;
 
   public MapContextMenuView() {
     init();
   }
 
   private void init() {
+    openInNewTabCheckBox = new CheckBox("In New Tab");
     horizontalDirectionMenuItem = new RadioMenuItem("Horizontal");
     verticalDirectionMenuItem = new RadioMenuItem("Vertical");
     Menu directionMenu = new Menu("View Direction");
@@ -30,8 +35,13 @@ public class MapContextMenuView implements MapContextMenuController.IMapContextM
     clearIntermediateMarkersMenuItem = new MenuItem("Intermediate Markers");
     clearElevationMarkersMenuItem = new MenuItem("Elevation Markers");
     clearAllMarkersMenuItem = new MenuItem("All Markers");
+    findRouteForStartAndEndMarkersMenuItem = new MenuItem("Start-End Markers");
+    findRouteForLastTwoElevationMarkersMenuItem = new MenuItem("Last 2 Elevation Markers");
+    Menu findRouteMenu = new Menu("Find Route For");
+    clearAllFromMapMenuItem = new MenuItem("Clear All");
+    CustomMenuItem inNewTabCheckMenuItem = new CustomMenuItem(openInNewTabCheckBox);
     Menu clearMarkersMenu = new Menu("Clear Markers");
-    contextMenu = new ContextMenu(directionMenu, clearMarkersMenu);
+    contextMenu = new ContextMenu(directionMenu, clearMarkersMenu, findRouteMenu, clearAllFromMapMenuItem, inNewTabCheckMenuItem);
 
     ToggleGroup directionGroup = new ToggleGroup();
     directionGroup.getToggles().addAll(horizontalDirectionMenuItem, verticalDirectionMenuItem);
@@ -43,6 +53,10 @@ public class MapContextMenuView implements MapContextMenuController.IMapContextM
             clearIntermediateMarkersMenuItem,
             clearElevationMarkersMenuItem,
             clearAllMarkersMenuItem);
+    findRouteMenu.getItems().addAll(findRouteForStartAndEndMarkersMenuItem, findRouteForLastTwoElevationMarkersMenuItem);
+
+    openInNewTabCheckBox.setSelected(true);
+    inNewTabCheckMenuItem.setHideOnClick(false);
   }
 
   public MenuItem getHorizontalDirectionMenuItem() {
@@ -71,6 +85,22 @@ public class MapContextMenuView implements MapContextMenuController.IMapContextM
 
   public MenuItem getClearAllMarkersMenuItem() {
     return clearAllMarkersMenuItem;
+  }
+
+  public MenuItem getFindRouteForLastTwoElevationMarkersMenuItem() {
+    return findRouteForLastTwoElevationMarkersMenuItem;
+  }
+
+  public MenuItem getFindRouteForStartAndEndMarkersMenuItem() {
+    return findRouteForStartAndEndMarkersMenuItem;
+  }
+
+  public MenuItem getClearAllFromMapMenuItem() {
+    return clearAllFromMapMenuItem;
+  }
+
+  public CheckBox getOpenInNewTabCheckBox() {
+    return openInNewTabCheckBox;
   }
 
   public ContextMenu getContextMenu() {

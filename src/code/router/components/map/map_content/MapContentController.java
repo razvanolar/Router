@@ -1,13 +1,14 @@
 package code.router.components.map.map_content;
 
 import code.router.EventBus;
-import code.router.RouterController;
+import code.router.components.map.MapController;
 import code.router.components.map.map_content.utils.MapContentUtils;
 import code.router.components.map.map_context_menu.MapContextMenuController;
-import code.router.events.load_resources_events.load_map_event.LoadMapEvent;
-import code.router.events.load_resources_events.load_map_event.LoadMapEventHandler;
 import code.router.events.mask_unmask_window_event.MaskWindowEvent;
 import code.router.events.mask_unmask_window_event.UnmaskWindowEvent;
+import code.router.events.routes_events.find_route_event.FindRouteEvent;
+import code.router.events.routes_events.find_route_event.FindRouteEventHandler;
+import code.router.model.Route;
 import code.router.utils.Component;
 import code.router.utils.Controller;
 import code.router.utils.RoutesUtils;
@@ -32,6 +33,7 @@ public class MapContentController implements Controller<MapContentController.IMa
     BorderPane getMainContainer();
   }
 
+  private MapController controller;
   private WebEngine webEngine;
   private MapContentUtils utils;
   private IMapContentView view;
@@ -45,9 +47,15 @@ public class MapContentController implements Controller<MapContentController.IMa
         utils.mapHeightChanged(newValue.doubleValue());
       }
     });
+
+    EventBus.addHandler(FindRouteEvent.TYPE, (FindRouteEventHandler) event -> {
+      if (!controller.isActive() || utils == null)
+        return;
+      utils.onFindRouteEvent(event.getRoute());
+    });
   }
 
-  public void loadMap() {
+  public void loadMap(Route route) {
     EventBus.fireEvent(new MaskWindowEvent("Loading Map Resources..."));
     WebView webView = createWebView();
     this.view.setMap(webView);
@@ -61,8 +69,20 @@ public class MapContentController implements Controller<MapContentController.IMa
         utils.mapHeightChanged(this.view.getMainContainer().getHeight());
         utils.setDomLoaded(true);
         EventBus.fireEvent(new UnmaskWindowEvent());
+        if (route != null) {
+          System.out.println("Loading route -----");
+          EventBus.fireEvent(new FindRouteEvent(route));
+        }
       }
     });
+  }
+
+  public void injectParentController(MapController controller) {
+    this.controller = controller;
+  }
+
+  public MapContentUtils getUtils() {
+    return utils;
   }
 
   private WebView createWebView() {
