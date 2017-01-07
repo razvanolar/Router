@@ -8,6 +8,8 @@ import javafx.scene.control.*;
  */
 public class MapContextMenuView implements MapContextMenuController.IMapContextMenuView {
 
+  private static MapContextMenuView INSTANCE;
+
   private ContextMenu contextMenu;
   private RadioMenuItem horizontalDirectionMenuItem;
   private RadioMenuItem verticalDirectionMenuItem;
@@ -22,7 +24,7 @@ public class MapContextMenuView implements MapContextMenuController.IMapContextM
   private MenuItem showInfoMarkerMenuItem;
   private CheckBox openInNewTabCheckBox;
 
-  public MapContextMenuView() {
+  private MapContextMenuView() {
     init();
   }
 
@@ -117,5 +119,11 @@ public class MapContextMenuView implements MapContextMenuController.IMapContextM
   @Override
   public Node asNode() {
     return null;
+  }
+
+  public static MapContextMenuView getInstance() {
+    if (INSTANCE == null)
+      INSTANCE = new MapContextMenuView();
+    return INSTANCE;
   }
 }

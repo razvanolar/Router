@@ -39,6 +39,10 @@ public class MapContextMenuController implements Controller<MapContextMenuContro
     CheckBox getOpenInNewTabCheckBox();
   }
 
+  private static MapContextMenuController INSTANCE;
+
+  private MapContextMenuController() {}
+
   @Override
   public void bind(IMapContextMenuView view) {
     view.getHorizontalDirectionMenuItem().setOnAction(event -> EventBus.fireEvent(new MapDirectionChangedEvent(true)));
@@ -74,5 +78,11 @@ public class MapContextMenuController implements Controller<MapContextMenuContro
     view.getClearAllFromMapMenuItem().setOnAction(event -> EventBus.fireEvent(new ClearAllFromMapEvent()));
 
     view.getShowInfoMarkerMenuItem().setOnAction(event -> EventBus.fireEvent(new ShowInfoMarkerEvent()));
+  }
+
+  public static MapContextMenuController getInstance() {
+    if (INSTANCE == null)
+      INSTANCE = new MapContextMenuController();
+    return INSTANCE;
   }
 }

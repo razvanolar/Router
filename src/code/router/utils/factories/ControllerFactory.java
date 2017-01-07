@@ -39,7 +39,7 @@ public class ControllerFactory {
       case FOOTER:
         return new FooterController();
       case MAP_CONTEXT_MENU:
-        return new MapContextMenuController();
+        return MapContextMenuController.getInstance();
     }
     return null;
   }

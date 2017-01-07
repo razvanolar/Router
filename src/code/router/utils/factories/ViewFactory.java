@@ -39,7 +39,7 @@ public class ViewFactory {
       case FOOTER:
         return new FooterView();
       case MAP_CONTEXT_MENU:
-        return new MapContextMenuView();
+        return MapContextMenuView.getInstance();
     }
     return null;
   }
