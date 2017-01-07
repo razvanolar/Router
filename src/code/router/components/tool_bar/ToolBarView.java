@@ -63,6 +63,10 @@ public class ToolBarView implements ToolBarController.IToolBarView {
     return newRouteButton;
   }
 
+  public Button getSaveRouteButton() {
+    return saveRouteButton;
+  }
+
   public ToggleButton getStartMarkerButton() {
     return startMarkerButton;
   }

@@ -31,8 +31,13 @@ import code.router.events.routes_events.next_route_event.NextRouteEvent;
 import code.router.events.routes_events.next_route_event.NextRouteEventHandler;
 import code.router.events.routes_events.previous_route_event.PreviousRouteEvent;
 import code.router.events.routes_events.previous_route_event.PreviousRouteEventHandler;
+import code.router.events.routes_events.save_route_events.SaveCurrentRouteEvent;
+import code.router.events.routes_events.save_route_events.SaveCurrentRouteEventHandler;
 import code.router.events.routes_events.update_elevations_event.UpdateElevationsEvent;
 import code.router.events.routes_events.update_elevations_event.UpdateElevationsEventHandler;
+import code.router.events.show_save_route_dialog_event.ShowSaveRouteDialogEvent;
+import code.router.model.MapDetails;
+import code.router.model.Route;
 import code.router.utils.Controller;
 import code.router.utils.View;
 
@@ -50,6 +55,8 @@ public class MapController implements Controller<MapController.IMapView> {
   private MapContentController mapContentController;
   private ChartContentController chartContentController;
   private MapSettingsController mapSettingsController;
+
+  private String relativeProjectPath;
 
   public MapController(MapContentController mapContentController,
           ChartContentController chartContentController,
@@ -146,6 +153,18 @@ public class MapController implements Controller<MapController.IMapView> {
       if (!isActive()) { return; }
       if (mapContentController.getUtils() != null)
         mapContentController.getUtils().showInfoMarker();
+    });
+
+    EventBus.addHandler(SaveCurrentRouteEvent.TYPE, (SaveCurrentRouteEventHandler) event -> {
+      if (!isActive()) { return; }
+      if (mapContentController.getUtils() != null) {
+        MapDetails mapDetails = mapContentController.getUtils().getMapDetails();
+        if (mapDetails != null) {
+          mapDetails.setName(event.getRouteName());
+          mapDetails.setRelativeProjectPath(relativeProjectPath);
+          EventBus.fireEvent(new ShowSaveRouteDialogEvent(mapDetails));
+        }
+      }
     });
   }
 

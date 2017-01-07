@@ -197,7 +197,12 @@ document.getLastTwoElevationMarkersPositions = function () {
 };
 
 document.getMarkersPositions = function (first, second) {
-    var rez = '';
-    rez += first.getPosition().lat() + ',' + first.getPosition().lng() + ',' + second.getPosition().lat() + ',' + second.getPosition().lng();
-    return rez;
+    return document.getMarkerPosition(first) + ',' + document.getMarkerPosition(second);
+};
+
+document.getMarkerPosition = function (marker) {
+    if (marker) {
+        return marker.getPosition().lat() + ',' + marker.getPosition().lng();
+    }
+    return '';
 };

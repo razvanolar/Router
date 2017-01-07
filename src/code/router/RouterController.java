@@ -4,11 +4,15 @@ import code.router.components.utils.EventsListener;
 import code.router.events.load_resources_events.LoadResourcesEvent;
 import code.router.events.load_resources_events.LoadResourcesEventHandler;
 import code.router.events.new_route_event.AddNewRouteViewEvent;
+import code.router.events.routes_events.save_route_events.GenericSaveRouteEvent;
+import code.router.events.routes_events.save_route_events.GenericSaveRouteEventHandler;
+import code.router.events.routes_events.save_route_events.SaveCurrentRouteEvent;
 import code.router.utils.Component;
 import code.router.utils.Controller;
 import code.router.utils.View;
 import code.router.utils.factories.ComponentFactory;
 import code.router.utils.types.ComponentTypes;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 
 import java.util.HashMap;
@@ -55,6 +59,13 @@ public class RouterController implements Controller<RouterController.IRouterView
     EventBus.addHandler(LoadResourcesEvent.TYPE, (LoadResourcesEventHandler) event -> {
       // when the project state will be loaded from the disk, AddNewRouteViewEvent will be fired only when no other map views are available
       EventBus.fireEvent(new AddNewRouteViewEvent("New Routes View"));
+    });
+
+    EventBus.addHandler(GenericSaveRouteEvent.TYPE, (GenericSaveRouteEventHandler) event -> {
+      Tab selectedTab = routerView.getTabPane().getSelectionModel().getSelectedItem();
+      if (selectedTab != null) {
+        EventBus.fireEvent(new SaveCurrentRouteEvent(selectedTab.getText()));
+      }
     });
 
     new EventsListener();

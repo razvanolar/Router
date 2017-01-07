@@ -2,16 +2,15 @@ package code.router.components.tool_bar;
 
 import code.router.EventBus;
 import code.router.events.map_settings_change_event.MapSettingsChangeEvent;
-import code.router.events.mask_unmask_window_event.UnmaskWindowEvent;
 import code.router.events.routes_events.find_route_event.FindRouteEvent;
 import code.router.events.routes_events.next_route_event.NextRouteEvent;
 import code.router.events.routes_events.previous_route_event.PreviousRouteEvent;
+import code.router.events.routes_events.save_route_events.GenericSaveRouteEvent;
 import code.router.events.show_new_route_dialog_event.ShowNewRouteDialogEvent;
 import code.router.model.MapSettings;
 import code.router.utils.Controller;
 import code.router.utils.View;
 import code.router.utils.types.MarkerTypes;
-import javafx.application.Platform;
 import javafx.scene.control.Button;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
@@ -23,6 +22,7 @@ public class ToolBarController implements Controller<ToolBarController.IToolBarV
 
   public interface IToolBarView extends View {
     Button getNewRouteButton();
+    Button getSaveRouteButton();
     ToggleButton getStartMarkerButton();
     ToggleButton getEndMarkerButton();
     ToggleButton getIntermediateMarkerButton();
@@ -41,6 +41,8 @@ public class ToolBarController implements Controller<ToolBarController.IToolBarV
     MapSettingsChangeEvent mapSettingsChangeEvent = new MapSettingsChangeEvent(mapSettingsModel);
 
     view.getNewRouteButton().setOnAction(event -> EventBus.fireEvent(new ShowNewRouteDialogEvent()));
+
+    view.getSaveRouteButton().setOnAction(event -> EventBus.fireEvent(new GenericSaveRouteEvent()));
 
     view.getToggleGroup().selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
       if (newValue == view.getStartMarkerButton())
@@ -62,21 +64,5 @@ public class ToolBarController implements Controller<ToolBarController.IToolBarV
     view.getPrevRouteButton().setOnAction(event -> EventBus.fireEvent(new PreviousRouteEvent()));
 
     view.getNextRouteButton().setOnAction(event -> EventBus.fireEvent(new NextRouteEvent()));
-  }
-
-  private void runThread() {
-    Thread thread = new Thread(() -> {
-      int n = 1000000;
-      for (int i = 0; i < n; i ++) {
-        double a = Math.sqrt(i) * Math.pow(i, 1.5) * Math.log(i);
-        a = Math.sqrt(i) * Math.pow(i, 1.5) * Math.log(i) - Math.sin(i) + Math.cos(i) * Math.tan(i);
-        a = Math.sqrt(i) * Math.pow(i, 1.5) * Math.log(i) - Math.sin(i) + Math.cos(i) * Math.tan(i);
-        a = Math.sqrt(i) * Math.pow(i, 1.5) * Math.log(i) - Math.sin(i) + Math.cos(i) * Math.tan(i);
-        a = Math.sqrt(i) * Math.pow(i, 1.5) * Math.log(i) - Math.sin(i) + Math.cos(i) * Math.tan(i);
-      }
-      Platform.runLater(() -> EventBus.fireEvent(new UnmaskWindowEvent()));
-    });
-
-    thread.start();
   }
 }

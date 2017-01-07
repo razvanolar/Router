@@ -13,10 +13,9 @@ import code.router.events.mask_unmask_window_event.UnmaskWindowEvent;
 import code.router.events.routes_events.find_route_for_last_2_elevation_markers_event.FindRouteForLast2ElevationMarkersEvent;
 import code.router.events.routes_events.update_elevations_event.UpdateElevationsEvent;
 import code.router.events.show_new_route_dialog_event.ShowNewRouteDialogEvent;
-import code.router.model.Elevation;
-import code.router.model.LatLng;
-import code.router.model.Route;
+import code.router.model.*;
 import code.router.utils.event.Event;
+import code.router.utils.types.MarkerTypes;
 import javafx.scene.web.WebEngine;
 import netscape.javascript.JSObject;
 
@@ -178,6 +177,19 @@ public class MapContentUtils {
     return null;
   }
 
+  public MapDetails getMapDetails() {
+    try {
+      Marker startMarker = createMarkerFromResult(webEngine.executeScript("document.getMarkerPosition(startMarker);"), MarkerTypes.START);
+      Marker endMarker = createMarkerFromResult(webEngine.executeScript("document.getMarkerPosition(endMarker);"), MarkerTypes.END);
+
+      return new MapDetails(startMarker, endMarker, null, null, null);
+    } catch (Exception e) {
+      System.out.println("Error while computing map details. Message: " + e.getMessage());
+      e.printStackTrace();
+    }
+    return null;
+  }
+
   public void mapHeightChanged(double newHeight) {
     if (!domLoaded) {
       events.add(new MapHeightChangedEvent(newHeight));
@@ -214,6 +226,25 @@ public class MapContentUtils {
     double endLatitude = Double.parseDouble(split[2]);
     double endLongitude = Double.parseDouble(split[3]);
     return new Route(new LatLng(startLatitude, startLongitude), new LatLng(endLatitude, endLongitude));
+  }
+
+  private Marker createMarkerFromResult(Object result, MarkerTypes type) throws Exception {
+    if (result != null && result instanceof String) {
+      return createMarkerFromString((String) result, type);
+    }
+    return null;
+  }
+
+  private Marker createMarkerFromString(String string, MarkerTypes type) throws Exception {
+    String[] split = string.split(",");
+    if (split.length != 2) {
+      System.out.println("Unable to determine positions for " + type.name() + " marker.");
+      return null;
+    }
+    return new Marker(new LatLng(
+            Double.parseDouble(split[0]),
+            Double.parseDouble(split[1])
+    ), type);
   }
 
   /**
