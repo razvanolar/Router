@@ -22,6 +22,7 @@ var mapRenderer = new google.maps.DirectionsRenderer({
     draggable: true
 });
 mapRenderer.setMap(map);
+var routeInfo = new google.maps.InfoWindow({});
 
 document.findRoute = function () {
     if (!startMarker || !endMarker) {
@@ -42,6 +43,7 @@ document.findRoute = function () {
         destination: endMarker.getPosition(),
         provideRouteAlternatives: true,
         travelMode: 'DRIVING',
+        unitSystem: google.maps.UnitSystem.METRIC,
         waypoints: waypointsArray
     };
     util.beginServiceCall("Finding Routes...");
@@ -49,10 +51,19 @@ document.findRoute = function () {
         util.endServiceCall();
         if (status === 'OK') {
             alert("routes: " + result.routes.length);
+
+            // render route
+            alert("Update renderer");
             mapRenderer.setDirections(result);
             routes_array = result.routes;
             current_routes_index = 0;
 
+            // show route info
+            alert("Add info window");
+            document.addInfoWindowForRoute(result.routes[0]);
+
+            // get route elevation
+            alert("Get elevations");
             document.getElevationsForRoute(result.routes[0]);
 
             // only for debugging
@@ -87,7 +98,7 @@ document.getElevationsForRoute = function (route) {
 document.getElevationForLatLng = function (latLng) {
     util.beginServiceCall("Finding Elevation...");
     elevationService.getElevationForLocations({
-       'locations': [latLng]
+        'locations': [latLng]
     }, function (result, status) {
         util.endServiceCall();
         if (status === 'OK' && result[0]) {
@@ -97,6 +108,25 @@ document.getElevationForLatLng = function (latLng) {
             alert("Unable to find elevation");
         }
     });
+};
+
+document.addInfoWindowForRoute = function (route) {
+    if (!route)
+        return;
+    var points = route.overview_path;
+    if (!points)
+        return;
+    if (routeInfo) {
+        routeInfo.close();
+    }
+    var infoWindowPosition = parseInt(points.length / 2);
+    var distance = document.calculateTotalDistanceForRoute(route);
+    routeInfo.setOptions({
+        content: '<div>' + distance + ' km</div>',
+        position: points[infoWindowPosition]
+    });
+
+    routeInfo.open(map);
 };
 
 document.nextRoute = function () {
@@ -128,4 +158,14 @@ document.clearRenderer = function () {
     mapRenderer.setMap(map);
     routes_array = null;
     current_routes_index = -1;
+};
+
+document.calculateTotalDistanceForRoute = function (route) {
+    if (!route || !route.legs)
+        return 0;
+    var total = 0;
+    route.legs.forEach(function (leg) {
+       total += leg.distance.value;
+    });
+    return parseInt(total) / 1000;
 };
