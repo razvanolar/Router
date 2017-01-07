@@ -122,6 +122,12 @@ public class MapContentUtils {
     webEngine.executeScript("document.addElevationMarker(" + lat + ", " + lng + ", '" + label + "');");
   }
 
+  public void showInfoMarker() {
+    if (!isDOMLoaded())
+      return;
+    webEngine.executeScript("document.addInfoWindowForCurrentRoute();");
+  }
+
   public void findRouteForLastTwoElevationMarkers(FindRouteForLast2ElevationMarkersEvent event) {
     Object result = webEngine.executeScript("document.canFindRouteForLastTwoElevationMarkers();");
     if (result != null && result instanceof Boolean) {

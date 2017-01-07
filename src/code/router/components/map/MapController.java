@@ -23,6 +23,8 @@ import code.router.events.markers_events.clear_markers_events.clear_start_marker
 import code.router.events.markers_events.clear_markers_events.clear_start_marker_event.ClearStartMarkerEventHandler;
 import code.router.events.markers_events.show_elevation_marker_event.ShowElevationMarkerEvent;
 import code.router.events.markers_events.show_elevation_marker_event.ShowElevationMarkerEventHandler;
+import code.router.events.markers_events.show_info_marker_event.ShowInfoMarkerEvent;
+import code.router.events.markers_events.show_info_marker_event.ShowInfoMarkerEventHandler;
 import code.router.events.routes_events.find_route_for_last_2_elevation_markers_event.FindRouteForLast2ElevationMarkersEvent;
 import code.router.events.routes_events.find_route_for_last_2_elevation_markers_event.FindRouteForLast2ElevationMarkersEventHandler;
 import code.router.events.routes_events.next_route_event.NextRouteEvent;
@@ -138,6 +140,12 @@ public class MapController implements Controller<MapController.IMapView> {
       if (!isActive()) { return; }
       if (mapContentController.getUtils() != null)
         mapContentController.getUtils().findRouteForLastTwoElevationMarkers(event);
+    });
+
+    EventBus.addHandler(ShowInfoMarkerEvent.TYPE, (ShowInfoMarkerEventHandler) event -> {
+      if (!isActive()) { return; }
+      if (mapContentController.getUtils() != null)
+        mapContentController.getUtils().showInfoMarker();
     });
   }
 

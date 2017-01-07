@@ -19,6 +19,7 @@ public class MapContextMenuView implements MapContextMenuController.IMapContextM
   private MenuItem findRouteForLastTwoElevationMarkersMenuItem;
   private MenuItem findRouteForStartAndEndMarkersMenuItem;
   private MenuItem clearAllFromMapMenuItem;
+  private MenuItem showInfoMarkerMenuItem;
   private CheckBox openInNewTabCheckBox;
 
   public MapContextMenuView() {
@@ -39,9 +40,11 @@ public class MapContextMenuView implements MapContextMenuController.IMapContextM
     findRouteForLastTwoElevationMarkersMenuItem = new MenuItem("Last 2 Elevation Markers");
     Menu findRouteMenu = new Menu("Find Route For");
     clearAllFromMapMenuItem = new MenuItem("Clear All");
+    showInfoMarkerMenuItem = new MenuItem("Show Info Marker");
     CustomMenuItem inNewTabCheckMenuItem = new CustomMenuItem(openInNewTabCheckBox);
     Menu clearMarkersMenu = new Menu("Clear Markers");
-    contextMenu = new ContextMenu(directionMenu, clearMarkersMenu, findRouteMenu, clearAllFromMapMenuItem, inNewTabCheckMenuItem);
+    contextMenu = new ContextMenu(directionMenu, clearMarkersMenu, findRouteMenu, clearAllFromMapMenuItem,
+            showInfoMarkerMenuItem, inNewTabCheckMenuItem);
 
     ToggleGroup directionGroup = new ToggleGroup();
     directionGroup.getToggles().addAll(horizontalDirectionMenuItem, verticalDirectionMenuItem);
@@ -97,6 +100,10 @@ public class MapContextMenuView implements MapContextMenuController.IMapContextM
 
   public MenuItem getClearAllFromMapMenuItem() {
     return clearAllFromMapMenuItem;
+  }
+
+  public MenuItem getShowInfoMarkerMenuItem() {
+    return showInfoMarkerMenuItem;
   }
 
   public CheckBox getOpenInNewTabCheckBox() {

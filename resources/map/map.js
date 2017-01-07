@@ -110,6 +110,14 @@ document.getElevationForLatLng = function (latLng) {
     });
 };
 
+document.addInfoWindowForCurrentRoute = function () {
+    if (routes_array) {
+        var length = routes_array.length;
+        if (current_routes_index >= 0 && current_routes_index < length && routes_array[current_routes_index])
+            document.addInfoWindowForRoute(routes_array[current_routes_index]);
+    }
+};
+
 document.addInfoWindowForRoute = function (route) {
     if (!route)
         return;

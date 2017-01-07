@@ -8,6 +8,7 @@ import code.router.events.markers_events.clear_markers_events.clear_end_marker_e
 import code.router.events.markers_events.clear_markers_events.clear_intermediate_markers_event.ClearIntermediateMarkersEvent;
 import code.router.events.markers_events.clear_markers_events.clear_start_marker_event.ClearStartMarkerEvent;
 import code.router.events.map_direction_change_event.MapDirectionChangedEvent;
+import code.router.events.markers_events.show_info_marker_event.ShowInfoMarkerEvent;
 import code.router.events.routes_events.find_route_event.FindRouteEvent;
 import code.router.events.routes_events.find_route_for_last_2_elevation_markers_event.FindRouteForLast2ElevationMarkersEvent;
 import code.router.events.routes_events.find_route_in_new_window_event.FindRouteInNewWindowEvent;
@@ -34,6 +35,7 @@ public class MapContextMenuController implements Controller<MapContextMenuContro
     MenuItem getFindRouteForLastTwoElevationMarkersMenuItem();
     MenuItem getFindRouteForStartAndEndMarkersMenuItem();
     MenuItem getClearAllFromMapMenuItem();
+    MenuItem getShowInfoMarkerMenuItem();
     CheckBox getOpenInNewTabCheckBox();
   }
 
@@ -70,5 +72,7 @@ public class MapContextMenuController implements Controller<MapContextMenuContro
     });
 
     view.getClearAllFromMapMenuItem().setOnAction(event -> EventBus.fireEvent(new ClearAllFromMapEvent()));
+
+    view.getShowInfoMarkerMenuItem().setOnAction(event -> EventBus.fireEvent(new ShowInfoMarkerEvent()));
   }
 }
