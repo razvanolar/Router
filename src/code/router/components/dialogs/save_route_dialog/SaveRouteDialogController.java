@@ -1,6 +1,8 @@
 package code.router.components.dialogs.save_route_dialog;
 
-import code.router.utils.Controller;
+import code.router.model.other.SaveRouteDialogEntity;
+import code.router.utils.DialogController;
+import code.router.utils.callbacks.DialogCallback;
 import code.router.utils.validators.StringValidator;
 import code.router.utils.View;
 import javafx.scene.control.Button;
@@ -9,7 +11,7 @@ import javafx.scene.control.TextField;
 /**
  * Created by razvanolar on 07.01.2017
  */
-public class SaveRouteDialogController implements Controller<SaveRouteDialogController.ISaveRouteDialogView> {
+public class SaveRouteDialogController extends DialogController<SaveRouteDialogController.ISaveRouteDialogView, SaveRouteDialogEntity> {
 
   public interface ISaveRouteDialogView extends View {
     TextField getRouteNameTextField();
@@ -17,28 +19,28 @@ public class SaveRouteDialogController implements Controller<SaveRouteDialogCont
   }
 
   private ISaveRouteDialogView view;
-  private Button actionButton;
 
-  public SaveRouteDialogController(Button actionButton) {
-    this.actionButton = actionButton;
+  public SaveRouteDialogController(Button actionButton, DialogCallback<SaveRouteDialogEntity> callback) {
+    super(actionButton, callback);
   }
 
   @Override
   public void bind(ISaveRouteDialogView view) {
     this.view = view;
-
     actionButton.setDisable(!isValid());
   }
 
-  public String getRouteName() {
-    return view.getRouteNameTextField().getText();
+  @Override
+  public View getView() {
+    return view;
   }
 
-  public String getRoutePath() {
-    return view.getRoutePathTextField().getText();
+  @Override
+  public SaveRouteDialogEntity collect() {
+    return new SaveRouteDialogEntity(view.getRouteNameTextField().getText(), view.getRoutePathTextField().getText());
   }
 
-  public boolean isValid() {
+  private boolean isValid() {
     return isValidName() && isValidPath();
   }
 

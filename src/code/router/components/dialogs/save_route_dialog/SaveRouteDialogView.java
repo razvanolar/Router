@@ -5,7 +5,6 @@ import com.jfoenix.controls.JFXTextField;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 
@@ -23,8 +22,8 @@ public class SaveRouteDialogView implements SaveRouteDialogController.ISaveRoute
   }
 
   private void init(String routeName, String routePath) {
-    routeNameTextField = new JFXTextField(routeName);
-    routePathTextField = new JFXTextField(routePath != null ? routePath : "C:\\Users\\razvanolar\\Desktop\\RouterUtil");
+    routeNameTextField = createTextField(routeName, "Name");
+    routePathTextField = createTextField(routePath != null ? routePath : "C:\\Users\\razvanolar\\Desktop\\RouterUtil", "Path");
     mainContainer = new GridPane();
 
     mainContainer.setAlignment(Pos.CENTER);
@@ -33,16 +32,15 @@ public class SaveRouteDialogView implements SaveRouteDialogController.ISaveRoute
     mainContainer.setVgap(13);
     mainContainer.add(routeNameTextField, 0, 0);
     mainContainer.add(routePathTextField, 0, 1);
+  }
 
-    routeNameTextField.setMinWidth(350);
-    routePathTextField.setMinWidth(300);
-
-    routeNameTextField.setFocusColor(RouterUtils.getDefaultFocusColor());
-    routeNameTextField.setPromptText("Name");
-    routeNameTextField.setLabelFloat(true);
-    routePathTextField.setFocusColor(RouterUtils.getDefaultFocusColor());
-    routePathTextField.setPromptText("Path");
-    routePathTextField.setLabelFloat(true);
+  private JFXTextField createTextField(String text, String promptText) {
+    JFXTextField textField = new JFXTextField(text);
+    textField.setPromptText(promptText);
+    textField.setLabelFloat(true);
+    textField.setMinWidth(350);
+    textField.setFocusColor(RouterUtils.getDefaultFocusColor());
+    return textField;
   }
 
   public TextField getRouteNameTextField() {

@@ -6,9 +6,9 @@ import code.router.utils.event.EventType;
 /**
  * Created by razvanolar on 24.01.2017
  */
-public class OpenRouteEvent extends Event<OpenRouteEventHandler> {
+public class ShowOpenRouteDialogEvent extends Event<ShowOpenRouteDialogEventHandler> {
 
-  public static final EventType<OpenRouteEventHandler> TYPE = new EventType<>();
+  public static final EventType<ShowOpenRouteDialogEventHandler> TYPE = new EventType<>();
 
   @Override
   public EventType getAssociatedType() {
@@ -16,7 +16,7 @@ public class OpenRouteEvent extends Event<OpenRouteEventHandler> {
   }
 
   @Override
-  public void dispatch(OpenRouteEventHandler handler) {
+  public void dispatch(ShowOpenRouteDialogEventHandler handler) {
     handler.onOpenRouteEvent(this);
   }
 }
