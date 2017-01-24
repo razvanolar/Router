@@ -7,6 +7,8 @@ import code.router.components.utils.JFXOkCancelDialog;
 import code.router.components.utils.OkCancelDialog;
 import code.router.components.utils.SystemFilesView;
 import code.router.events.new_route_event.AddNewRouteViewEvent;
+import code.router.events.notification_event.NotificationEvent;
+import code.router.events.notification_event.NotificationEventHandler;
 import code.router.events.routes_events.open_route_event.ShowOpenRouteDialogEvent;
 import code.router.events.routes_events.open_route_event.ShowOpenRouteDialogEventHandler;
 import code.router.events.routes_events.save_route_events.SaveRouteEvent;
@@ -26,6 +28,9 @@ import code.router.utils.factories.DialogControllerFactory;
 import code.router.utils.types.DialogComponentTypes;
 import code.router.utils.validators.RouteFileValidator;
 import com.jfoenix.controls.JFXDialog;
+import javafx.geometry.Pos;
+import javafx.util.Duration;
+import org.controlsfx.control.Notifications;
 
 import java.io.File;
 
@@ -81,6 +86,17 @@ public class EventsListener {
       SystemFilesView systemFilesView = new SystemFilesView(dialog.getOkButton(), rootFile, true, HardCodedConstants.PROJECT_ROUTES_PATH, new RouteFileValidator());
       dialog.setContent(systemFilesView.asNode());
       dialog.show();
+    });
+
+    EventBus.addHandler(NotificationEvent.TYPE, (NotificationEventHandler) event -> {
+      Notifications notification = Notifications.create()
+              .title("Notification")
+              .text(event.getMessage())
+              .hideAfter(Duration.seconds(5))
+              .position(Pos.BOTTOM_RIGHT)
+              .graphic(null);
+      notification.darkStyle();
+      notification.show();
     });
   }
 

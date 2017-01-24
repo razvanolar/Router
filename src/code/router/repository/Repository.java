@@ -1,13 +1,14 @@
 package code.router.repository;
 
 import code.router.EventBus;
-import code.router.events.mask_unmask_window_event.MaskWindowEvent;
-import code.router.events.mask_unmask_window_event.UnmaskWindowEvent;
+import code.router.events.notification_event.NotificationEvent;
 import code.router.events.routes_events.save_route_events.SaveRouteEvent;
 import code.router.events.routes_events.save_route_events.SaveRouteEventHandler;
 import code.router.model.routes.MapDetails;
 import code.router.repository.xml_handlers.RouteXMLConverter;
 import code.router.utils.FileUtils;
+import code.router.utils.types.NotificationLevelTypes;
+import javafx.application.Platform;
 
 import java.io.File;
 import java.io.PrintWriter;
@@ -23,14 +24,21 @@ public class Repository {
 
   private void initHandlers() {
     EventBus.addHandler(SaveRouteEvent.TYPE, (SaveRouteEventHandler) event -> {
-      MapDetails mapDetails = event.getMapDetails();
-      EventBus.fireEvent(new MaskWindowEvent("Saving " + mapDetails.getName() + "..."));
-      try {
-        saveRoute(mapDetails);
-      } catch (Exception e) {
-        e.printStackTrace();
-      }
-      EventBus.fireEvent(new UnmaskWindowEvent());
+      Thread thread = new Thread(() -> {
+        MapDetails mapDetails = event.getMapDetails();
+        NotificationEvent notificationEvent;
+        try {
+          saveRoute(mapDetails);
+          notificationEvent = new NotificationEvent(mapDetails.getName() + " route was saved successfully", NotificationLevelTypes.INFO);
+        } catch (Exception e) {
+          e.printStackTrace();
+          notificationEvent = new NotificationEvent("Error while saving route " + mapDetails.getName(), NotificationLevelTypes.ERROR);
+        }
+
+        NotificationEvent finalNotificationEvent = notificationEvent;
+        Platform.runLater(() -> EventBus.fireEvent(finalNotificationEvent));
+      });
+      thread.run();
     });
   }
 
