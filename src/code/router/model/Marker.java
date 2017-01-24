@@ -9,10 +9,16 @@ public class Marker {
 
   private LatLng position;
   private MarkerTypes type;
+  private String label;
 
   public Marker(LatLng position, MarkerTypes type) {
     this.position = position;
     this.type = type;
+  }
+
+  public Marker(LatLng position, MarkerTypes type, String label) {
+    this(position, type);
+    this.label = label;
   }
 
   public LatLng getPosition() {
@@ -21,5 +27,9 @@ public class Marker {
 
   public MarkerTypes getType() {
     return type;
+  }
+
+  public String getLabel() {
+    return label;
   }
 }

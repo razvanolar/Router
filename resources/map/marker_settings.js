@@ -188,16 +188,22 @@ document.clearLastTwoElevationMarkers = function () {
 };
 
 document.getCurrentRoutePositions = function () {
-  return document.getMarkersPositions(startMarker, endMarker);
+  return document.getMarkersPositions([startMarker, endMarker]);
 };
 
 document.getLastTwoElevationMarkersPositions = function () {
     var length = elevationMarkers.length;
-    return document.getMarkersPositions(elevationMarkers[length - 2], elevationMarkers[length - 1]);
+    return document.getMarkersPositions([elevationMarkers[length - 2], elevationMarkers[length - 1]]);
 };
 
-document.getMarkersPositions = function (first, second) {
-    return document.getMarkerPosition(first) + ',' + document.getMarkerPosition(second);
+document.getMarkersPositions = function (markersList) {
+    var result = '';
+    for (var i = 0; i < markersList.length; i ++) {
+        result += document.getMarkerPosition(markersList[i]);
+        if (i < markersList.length - 1)
+            result += ',';
+    }
+    return result;
 };
 
 document.getMarkerPosition = function (marker) {

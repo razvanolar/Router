@@ -179,7 +179,25 @@ document.calculateTotalDistanceForRoute = function (route) {
         return 0;
     var total = 0;
     route.legs.forEach(function (leg) {
-       total += leg.distance.value;
+        total += leg.distance.value;
     });
     return parseInt(total) / 1000;
+};
+
+
+//
+document.getMapCenter = function () {
+    if (map) {
+        return map.getCenter().lat() + ',' + map.getCenter().lng();
+    }
+    return null;
+};
+
+document.getMapZoomValue = function () {
+    if (map) {
+        if (routes_array)
+            alert("JSON: " + routes_array[0].toString());
+        return map.getZoom();
+    }
+    return null;
 };

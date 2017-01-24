@@ -11,17 +11,19 @@ public class MapDetails {
   private String relativeProjectPath;
   private Marker startMarker;
   private Marker endMarker;
+  private LatLng mapCenter;
+  private double zoomValue;
   private List<Marker> intermediateMarkers;
   private List<Marker> elevationMarkers;
-  private Route route;
 
-  public MapDetails(Marker startMarker, Marker endMarker,
-                    List<Marker> intermediateMarkers, List<Marker> elevationMarkers, Route route) {
+  public MapDetails(Marker startMarker, Marker endMarker, LatLng mapCenter, double zoomValue,
+                    List<Marker> intermediateMarkers, List<Marker> elevationMarkers) {
     this.startMarker = startMarker;
     this.endMarker = endMarker;
+    this.mapCenter = mapCenter;
+    this.zoomValue = zoomValue;
     this.intermediateMarkers = intermediateMarkers;
     this.elevationMarkers = elevationMarkers;
-    this.route = route;
   }
 
   public String getName() {
@@ -32,16 +34,20 @@ public class MapDetails {
     return relativeProjectPath;
   }
 
-  public Route getRoute() {
-    return route;
-  }
-
   public Marker getStartMarker() {
     return startMarker;
   }
 
   public Marker getEndMarker() {
     return endMarker;
+  }
+
+  public LatLng getMapCenter() {
+    return mapCenter;
+  }
+
+  public double getZoomValue() {
+    return zoomValue;
   }
 
   public List<Marker> getIntermediateMarkers() {

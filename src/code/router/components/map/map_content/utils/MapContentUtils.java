@@ -181,8 +181,16 @@ public class MapContentUtils {
     try {
       Marker startMarker = createMarkerFromResult(webEngine.executeScript("document.getMarkerPosition(startMarker);"), MarkerTypes.START);
       Marker endMarker = createMarkerFromResult(webEngine.executeScript("document.getMarkerPosition(endMarker);"), MarkerTypes.END);
-
-      return new MapDetails(startMarker, endMarker, null, null, null);
+      LatLng mapCenter = createLatLngFromResult(webEngine.executeScript("document.getMapCenter();"));
+      List<Marker> intermediateMarkers = createMarkersFromResult(webEngine.executeScript("document.getMarkersPositions(intermediateMarkers);"), MarkerTypes.INTERMEDIATE);
+      List<Marker> elevationMarkers = createMarkersFromResult(webEngine.executeScript("document.getMarkersPositions(elevationMarkers);"), MarkerTypes.ELEVATION);
+      double zoom = 15;
+      Object zoomResult = webEngine.executeScript("document.getMapZoomValue();");
+      if (zoomResult != null && zoomResult instanceof Number) {
+        Number number = (Number) zoomResult;
+        zoom = number.doubleValue();
+      }
+      return new MapDetails(startMarker, endMarker, mapCenter, zoom, intermediateMarkers, elevationMarkers);
     } catch (Exception e) {
       System.out.println("Error while computing map details. Message: " + e.getMessage());
       e.printStackTrace();
@@ -236,15 +244,46 @@ public class MapContentUtils {
   }
 
   private Marker createMarkerFromString(String string, MarkerTypes type) throws Exception {
-    String[] split = string.split(",");
-    if (split.length != 2) {
+    return createMarkerFromArray(string.split(","), type);
+  }
+
+
+  private Marker createMarkerFromArray(String[] strings, MarkerTypes type) throws Exception {
+    if (strings.length != 2) {
       System.out.println("Unable to determine positions for " + type.name() + " marker.");
       return null;
     }
     return new Marker(new LatLng(
+            Double.parseDouble(strings[0]),
+            Double.parseDouble(strings[1])
+    ), type);
+  }
+
+  private List<Marker> createMarkersFromResult(Object result, MarkerTypes type) throws Exception {
+    if (result != null && result instanceof String) {
+      String[] split = ((String) result).split(",");
+      List<Marker> markers = new ArrayList<>(split.length / 2 + 1);
+      for (int i = 0; i < split.length; i += 2) {
+        markers.add(createMarkerFromArray(new String[]{split[i], split[i + 1]}, type));
+      }
+      return markers;
+    }
+    return null;
+  }
+
+  private LatLng createLatLngFromResult(Object object) throws Exception {
+    if (object != null && object instanceof String) {
+      return createLatLngFromString((String) object);
+    }
+    return null;
+  }
+
+  private LatLng createLatLngFromString(String string) throws Exception {
+    String[] split = string.split(",");
+    return new LatLng(
             Double.parseDouble(split[0]),
             Double.parseDouble(split[1])
-    ), type);
+    );
   }
 
   /**

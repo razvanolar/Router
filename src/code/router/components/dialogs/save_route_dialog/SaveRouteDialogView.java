@@ -22,7 +22,7 @@ public class SaveRouteDialogView implements SaveRouteDialogController.ISaveRoute
 
   private void init(String routeName, String routePath) {
     routeNameTextField = new TextField(routeName);
-    routePathTextField = new TextField(routePath);
+    routePathTextField = new TextField(routePath != null ? routePath : "C:\\Users\\razvanolar\\Desktop\\RouterUtil");
     mainContainer = new GridPane();
 
     mainContainer.setAlignment(Pos.CENTER);
