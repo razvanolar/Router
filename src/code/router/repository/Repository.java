@@ -5,7 +5,7 @@ import code.router.events.mask_unmask_window_event.MaskWindowEvent;
 import code.router.events.mask_unmask_window_event.UnmaskWindowEvent;
 import code.router.events.routes_events.save_route_events.SaveRouteEvent;
 import code.router.events.routes_events.save_route_events.SaveRouteEventHandler;
-import code.router.model.MapDetails;
+import code.router.model.routes.MapDetails;
 import code.router.repository.xml_handlers.RouteXMLConverter;
 
 import java.io.File;

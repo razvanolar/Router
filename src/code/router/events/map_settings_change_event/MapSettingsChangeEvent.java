@@ -1,6 +1,6 @@
 package code.router.events.map_settings_change_event;
 
-import code.router.model.MapSettings;
+import code.router.model.routes.MapSettings;
 import code.router.utils.event.Event;
 import code.router.utils.event.EventType;
 

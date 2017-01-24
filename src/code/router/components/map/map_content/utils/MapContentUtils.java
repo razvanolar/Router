@@ -13,7 +13,7 @@ import code.router.events.mask_unmask_window_event.UnmaskWindowEvent;
 import code.router.events.routes_events.find_route_for_last_2_elevation_markers_event.FindRouteForLast2ElevationMarkersEvent;
 import code.router.events.routes_events.update_elevations_event.UpdateElevationsEvent;
 import code.router.events.show_new_route_dialog_event.ShowNewRouteDialogEvent;
-import code.router.model.*;
+import code.router.model.routes.*;
 import code.router.utils.event.Event;
 import code.router.utils.types.MarkerTypes;
 import javafx.scene.web.WebEngine;

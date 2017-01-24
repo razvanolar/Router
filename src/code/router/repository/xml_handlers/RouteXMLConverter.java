@@ -1,10 +1,10 @@
 package code.router.repository.xml_handlers;
 
-import code.router.model.LatLng;
-import code.router.model.MapDetails;
-import code.router.model.Marker;
+import code.router.model.routes.LatLng;
+import code.router.model.routes.MapDetails;
+import code.router.model.routes.Marker;
 import code.router.repository.SystemParameters;
-import code.router.utils.StringValidator;
+import code.router.utils.validators.StringValidator;
 
 import java.util.List;
 

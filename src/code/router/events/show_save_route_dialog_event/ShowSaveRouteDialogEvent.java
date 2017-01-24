@@ -1,6 +1,6 @@
 package code.router.events.show_save_route_dialog_event;
 
-import code.router.model.MapDetails;
+import code.router.model.routes.MapDetails;
 import code.router.utils.event.Event;
 import code.router.utils.event.EventType;
 

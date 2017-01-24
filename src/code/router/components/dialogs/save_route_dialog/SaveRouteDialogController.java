@@ -1,7 +1,7 @@
 package code.router.components.dialogs.save_route_dialog;
 
 import code.router.utils.Controller;
-import code.router.utils.StringValidator;
+import code.router.utils.validators.StringValidator;
 import code.router.utils.View;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;

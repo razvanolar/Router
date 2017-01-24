@@ -1,4 +1,4 @@
-package code.router.model;
+package code.router.model.routes;
 
 import java.util.List;
 

@@ -36,8 +36,7 @@ import code.router.events.routes_events.save_route_events.SaveCurrentRouteEventH
 import code.router.events.routes_events.update_elevations_event.UpdateElevationsEvent;
 import code.router.events.routes_events.update_elevations_event.UpdateElevationsEventHandler;
 import code.router.events.show_save_route_dialog_event.ShowSaveRouteDialogEvent;
-import code.router.model.MapDetails;
-import code.router.model.Route;
+import code.router.model.routes.MapDetails;
 import code.router.utils.Controller;
 import code.router.utils.View;
 

@@ -4,7 +4,7 @@ import code.router.EventBus;
 import code.router.events.markers_events.show_elevation_marker_event.ShowElevationMarkerEvent;
 import code.router.events.routes_events.update_elevations_event.UpdateElevationsEvent;
 import code.router.events.routes_events.update_elevations_event.UpdateElevationsEventHandler;
-import code.router.model.Elevation;
+import code.router.model.routes.Elevation;
 import code.router.utils.Controller;
 import code.router.utils.View;
 import javafx.event.EventHandler;

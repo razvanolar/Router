@@ -11,7 +11,7 @@ import code.router.events.routes_events.find_route_event.FindRouteEventHandler;
 import code.router.events.routes_events.find_route_in_new_window_event.FindRouteInNewWindowEvent;
 import code.router.events.routes_events.find_route_in_new_window_event.FindRouteInNewWindowEventHandler;
 import code.router.events.show_new_route_dialog_event.ShowNewRouteDialogEvent;
-import code.router.model.Route;
+import code.router.model.routes.Route;
 import code.router.utils.Component;
 import code.router.utils.Controller;
 import code.router.utils.RoutesUtils;

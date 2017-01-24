@@ -1,6 +1,6 @@
 package code.router.events.show_new_route_dialog_event;
 
-import code.router.model.Route;
+import code.router.model.routes.Route;
 import code.router.utils.event.Event;
 import code.router.utils.event.EventType;
 

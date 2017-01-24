@@ -1,6 +1,6 @@
 package code.router.events.routes_events.update_elevations_event;
 
-import code.router.model.Elevation;
+import code.router.model.routes.Elevation;
 import code.router.utils.event.Event;
 import code.router.utils.event.EventType;
 

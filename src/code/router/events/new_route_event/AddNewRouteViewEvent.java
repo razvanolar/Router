@@ -1,6 +1,6 @@
 package code.router.events.new_route_event;
 
-import code.router.model.Route;
+import code.router.model.routes.Route;
 import code.router.utils.event.Event;
 import code.router.utils.event.EventType;
 

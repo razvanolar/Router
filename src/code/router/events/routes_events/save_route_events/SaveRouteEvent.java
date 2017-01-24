@@ -1,6 +1,6 @@
 package code.router.events.routes_events.save_route_events;
 
-import code.router.model.MapDetails;
+import code.router.model.routes.MapDetails;
 import code.router.utils.event.Event;
 import code.router.utils.event.EventType;
 

@@ -8,7 +8,7 @@ import code.router.events.routes_events.open_route_event.OpenRouteEvent;
 import code.router.events.routes_events.previous_route_event.PreviousRouteEvent;
 import code.router.events.routes_events.save_route_events.GenericSaveRouteEvent;
 import code.router.events.show_new_route_dialog_event.ShowNewRouteDialogEvent;
-import code.router.model.MapSettings;
+import code.router.model.routes.MapSettings;
 import code.router.utils.Controller;
 import code.router.utils.View;
 import code.router.utils.types.MarkerTypes;

@@ -1,4 +1,4 @@
-package code.router.model;
+package code.router.model.routes;
 
 /**
  * Created by razvanolar on 05.01.2017

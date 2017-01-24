@@ -1,4 +1,4 @@
-package code.router.model;
+package code.router.model.routes;
 
 import code.router.utils.types.MarkerTypes;
 

@@ -1,4 +1,4 @@
-package code.router.utils;
+package code.router.utils.validators;
 
 /**
  * Created by razvanolar on 06.01.2017
