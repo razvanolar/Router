@@ -1,5 +1,7 @@
 package code.router;
 
+import code.router.events.show_dialog_event.ShowDialogEvent;
+import code.router.events.show_dialog_event.ShowDialogEventHandler;
 import code.router.events.utils.EventsListener;
 import code.router.events.load_resources_events.LoadResourcesEvent;
 import code.router.events.load_resources_events.LoadResourcesEventHandler;
@@ -13,8 +15,10 @@ import code.router.utils.Controller;
 import code.router.utils.View;
 import code.router.utils.factories.ComponentFactory;
 import code.router.utils.types.ComponentTypes;
+import com.jfoenix.controls.JFXDialog;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.layout.StackPane;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,6 +32,7 @@ public class RouterController implements Controller<RouterController.IRouterView
 
   interface IRouterView extends View {
     TabPane getTabPane();
+    StackPane getStackPane();
   }
 
   private IRouterView routerView;
@@ -68,6 +73,13 @@ public class RouterController implements Controller<RouterController.IRouterView
       if (selectedTab != null) {
         EventBus.fireEvent(new SaveCurrentRouteEvent(selectedTab.getText()));
       }
+    });
+
+    EventBus.addHandler(ShowDialogEvent.TYPE, (ShowDialogEventHandler) event -> {
+      JFXDialog dialog = event.getDialog();
+      dialog.setDialogContainer(routerView.getStackPane());
+      dialog.setTransitionType(JFXDialog.DialogTransition.CENTER);
+      dialog.show();
     });
 
     new EventsListener();

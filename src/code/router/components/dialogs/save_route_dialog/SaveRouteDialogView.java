@@ -1,5 +1,7 @@
 package code.router.components.dialogs.save_route_dialog;
 
+import code.router.utils.RouterUtils;
+import com.jfoenix.controls.JFXTextField;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -13,29 +15,34 @@ import javafx.scene.layout.GridPane;
 public class SaveRouteDialogView implements SaveRouteDialogController.ISaveRouteDialogView {
 
   private GridPane mainContainer;
-  private TextField routeNameTextField;
-  private TextField routePathTextField;
+  private JFXTextField routeNameTextField;
+  private JFXTextField routePathTextField;
 
   public SaveRouteDialogView(String routeName, String routePath) {
     init(routeName, routePath);
   }
 
   private void init(String routeName, String routePath) {
-    routeNameTextField = new TextField(routeName);
-    routePathTextField = new TextField(routePath != null ? routePath : "C:\\Users\\razvanolar\\Desktop\\RouterUtil");
+    routeNameTextField = new JFXTextField(routeName);
+    routePathTextField = new JFXTextField(routePath != null ? routePath : "C:\\Users\\razvanolar\\Desktop\\RouterUtil");
     mainContainer = new GridPane();
 
     mainContainer.setAlignment(Pos.CENTER);
-    mainContainer.setPadding(new Insets(5));
+    mainContainer.setPadding(new Insets(15, 5, 5, 5));
     mainContainer.setHgap(5);
-    mainContainer.setVgap(5);
-    mainContainer.add(new Label("Name: "), 0, 0);
-    mainContainer.add(routeNameTextField, 1, 0);
-    mainContainer.add(new Label("Path: "), 0, 1);
-    mainContainer.add(routePathTextField, 1, 1);
+    mainContainer.setVgap(13);
+    mainContainer.add(routeNameTextField, 0, 0);
+    mainContainer.add(routePathTextField, 0, 1);
 
-    routeNameTextField.setMinWidth(300);
+    routeNameTextField.setMinWidth(350);
     routePathTextField.setMinWidth(300);
+
+    routeNameTextField.setFocusColor(RouterUtils.getDefaultFocusColor());
+    routeNameTextField.setPromptText("Name");
+    routeNameTextField.setLabelFloat(true);
+    routePathTextField.setFocusColor(RouterUtils.getDefaultFocusColor());
+    routePathTextField.setPromptText("Path");
+    routePathTextField.setLabelFloat(true);
   }
 
   public TextField getRouteNameTextField() {

@@ -26,6 +26,8 @@ public class NewRouteDialogController implements Controller<NewRouteDialogContro
   public void bind(INewRouteDialogView view) {
     this.view = view;
 
+    actionButton.setDisable(true);
+
     view.getNameField().textProperty().addListener((observable, oldValue, newValue) -> {
       actionButton.setDisable(StringValidator.isNullOrEmpty(newValue));
     });

@@ -1,8 +1,10 @@
 package code.router.components.dialogs.new_route_dialog;
 
+import code.router.utils.RouterUtils;
+import com.jfoenix.controls.JFXTextField;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 
@@ -12,22 +14,26 @@ import javafx.scene.layout.GridPane;
 public class NewRouteDialogView implements NewRouteDialogController.INewRouteDialogView {
 
   private GridPane mainContainer;
-  private TextField nameField;
+  private JFXTextField nameField;
 
   public NewRouteDialogView() {
     inti();
   }
 
   private void inti() {
-    nameField = new TextField();
+    nameField = new JFXTextField();
     mainContainer = new GridPane();
 
-    mainContainer.add(new Label("Tab Name: "), 0, 0);
-    mainContainer.add(nameField, 1, 0);
-    mainContainer.setPadding(new Insets(5));
+    mainContainer.add(nameField, 0, 0);
+    mainContainer.setPadding(new Insets(15, 5, 5, 5));
     mainContainer.setHgap(10);
+    mainContainer.setAlignment(Pos.CENTER);
 
     nameField.setMinWidth(250);
+
+    nameField.setFocusColor(RouterUtils.getDefaultFocusColor());
+    nameField.setPromptText("Tab Name");
+    nameField.setLabelFloat(true);
   }
 
   public TextField getNameField() {

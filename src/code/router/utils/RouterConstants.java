@@ -12,7 +12,11 @@ public class RouterConstants {
   public static final String MAP_DIR_PATH = RESOURCES_PATH + "map\\";
   public static final String MAP_HTML_PATH = MAP_DIR_PATH + "map.html";
 
+  // CSS classes
   public static final String MASK_PANE_CLASS = "mask_pane";
   public static final String HEADER_PANE_CLASS = "header_pane";
   public static final String TOOL_BAR_CLASS = "clearButtonsContainer";
+
+  // colors
+  public static final String DEFAULT_TEXT_FIELD_FOCUS_COLOR = "#4286f4";
 }

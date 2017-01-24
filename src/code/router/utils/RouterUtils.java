@@ -1,5 +1,7 @@
 package code.router.utils;
 
+import javafx.scene.paint.*;
+
 import java.io.File;
 
 /**
@@ -17,5 +19,9 @@ public class RouterUtils {
 
   private static String getFilePath(File file) {
     return file.exists() ? "file:///" + file.getAbsolutePath().replace("\\", "/") : null;
+  }
+
+  public static Color getDefaultFocusColor() {
+    return javafx.scene.paint.Color.valueOf(RouterConstants.DEFAULT_TEXT_FIELD_FOCUS_COLOR);
   }
 }

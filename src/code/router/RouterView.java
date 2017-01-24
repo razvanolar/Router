@@ -132,6 +132,11 @@ public class RouterView implements RouterController.IRouterView {
   }
 
   @Override
+  public StackPane getStackPane() {
+    return mainContainer;
+  }
+
+  @Override
   public Node asNode() {
     return mainContainer;
   }
