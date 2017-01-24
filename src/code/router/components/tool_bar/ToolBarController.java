@@ -4,6 +4,7 @@ import code.router.EventBus;
 import code.router.events.map_settings_change_event.MapSettingsChangeEvent;
 import code.router.events.routes_events.find_route_event.FindRouteEvent;
 import code.router.events.routes_events.next_route_event.NextRouteEvent;
+import code.router.events.routes_events.open_route_event.OpenRouteEvent;
 import code.router.events.routes_events.previous_route_event.PreviousRouteEvent;
 import code.router.events.routes_events.save_route_events.GenericSaveRouteEvent;
 import code.router.events.show_new_route_dialog_event.ShowNewRouteDialogEvent;
@@ -22,6 +23,7 @@ public class ToolBarController implements Controller<ToolBarController.IToolBarV
 
   public interface IToolBarView extends View {
     Button getNewRouteButton();
+    Button getOpenButton();
     Button getSaveRouteButton();
     ToggleButton getStartMarkerButton();
     ToggleButton getEndMarkerButton();
@@ -41,6 +43,8 @@ public class ToolBarController implements Controller<ToolBarController.IToolBarV
     MapSettingsChangeEvent mapSettingsChangeEvent = new MapSettingsChangeEvent(mapSettingsModel);
 
     view.getNewRouteButton().setOnAction(event -> EventBus.fireEvent(new ShowNewRouteDialogEvent()));
+
+    view.getOpenButton().setOnAction(event -> EventBus.fireEvent(new OpenRouteEvent()));
 
     view.getSaveRouteButton().setOnAction(event -> EventBus.fireEvent(new GenericSaveRouteEvent()));
 

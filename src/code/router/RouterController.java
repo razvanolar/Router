@@ -1,6 +1,6 @@
 package code.router;
 
-import code.router.components.utils.EventsListener;
+import code.router.events.utils.EventsListener;
 import code.router.events.load_resources_events.LoadResourcesEvent;
 import code.router.events.load_resources_events.LoadResourcesEventHandler;
 import code.router.events.new_route_event.AddNewRouteViewEvent;

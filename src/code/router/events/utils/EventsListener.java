@@ -1,20 +1,20 @@
-package code.router.components.utils;
+package code.router.events.utils;
 
 import code.router.EventBus;
 import code.router.components.dialogs.new_route_dialog.NewRouteDialogController;
 import code.router.components.dialogs.new_route_dialog.NewRouteDialogView;
 import code.router.components.dialogs.save_route_dialog.SaveRouteDialogController;
 import code.router.components.dialogs.save_route_dialog.SaveRouteDialogView;
-import code.router.events.load_resources_events.load_map_event.LoadMapEvent;
+import code.router.components.utils.OkCancelDialog;
 import code.router.events.new_route_event.AddNewRouteViewEvent;
+import code.router.events.routes_events.open_route_event.OpenRouteEvent;
+import code.router.events.routes_events.open_route_event.OpenRouteEventHandler;
 import code.router.events.routes_events.save_route_events.SaveRouteEvent;
 import code.router.events.show_new_route_dialog_event.ShowNewRouteDialogEvent;
 import code.router.events.show_new_route_dialog_event.ShowNewRouteDialogEventHandler;
 import code.router.events.show_save_route_dialog_event.ShowSaveRouteDialogEvent;
 import code.router.events.show_save_route_dialog_event.ShowSaveRouteDialogEventHandler;
 import code.router.model.MapDetails;
-import code.router.utils.factories.ComponentFactory;
-import code.router.utils.types.ComponentTypes;
 
 /**
  * Created by razvanolar on 06.01.2017
@@ -26,6 +26,10 @@ public class EventsListener {
   }
 
   private void addListeners() {
+    /*
+      * Show the new route dialog component.
+      * Handle the information for the new route and fire the event for adding the route
+     */
     EventBus.addHandler(ShowNewRouteDialogEvent.TYPE, (ShowNewRouteDialogEventHandler) event -> {
       OkCancelDialog dialog = new OkCancelDialog("New Route View", null);
       dialog.getOkButton().setDisable(true);
@@ -56,6 +60,10 @@ public class EventsListener {
         EventBus.fireEvent(new SaveRouteEvent(mapDetails));
       });
       dialog.show();
+    });
+
+    EventBus.addHandler(OpenRouteEvent.TYPE, (OpenRouteEventHandler) event -> {
+
     });
   }
 }

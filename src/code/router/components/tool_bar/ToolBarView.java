@@ -11,6 +11,7 @@ public class ToolBarView implements ToolBarController.IToolBarView {
 
   private ToolBar toolBar;
   private Button newRouteButton;
+  private Button openButton;
   private Button saveRouteButton;
   private ToggleButton startMarkerButton;
   private ToggleButton endMarkerButton;
@@ -28,6 +29,7 @@ public class ToolBarView implements ToolBarController.IToolBarView {
 
   private void init() {
     newRouteButton = new Button("New");
+    openButton = new Button("Open");
     saveRouteButton = new Button("Save");
     startMarkerButton = new ToggleButton("Start");
     endMarkerButton = new ToggleButton("End");
@@ -40,6 +42,7 @@ public class ToolBarView implements ToolBarController.IToolBarView {
     toggleGroup = new ToggleGroup();
     toolBar = new ToolBar(
             newRouteButton,
+            openButton,
             saveRouteButton,
             new Separator(),
             new Label("Markers: "),
@@ -61,6 +64,10 @@ public class ToolBarView implements ToolBarController.IToolBarView {
 
   public Button getNewRouteButton() {
     return newRouteButton;
+  }
+
+  public Button getOpenButton() {
+    return openButton;
   }
 
   public Button getSaveRouteButton() {
