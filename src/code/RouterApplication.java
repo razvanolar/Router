@@ -3,7 +3,7 @@ package code;
 import code.router.EventBus;
 import code.router.RouterController;
 import code.router.events.load_resources_events.LoadResourcesEvent;
-import code.router.utils.RoutesUtils;
+import code.router.utils.RouterUtils;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
@@ -27,7 +27,7 @@ public class RouterApplication extends Application {
       e.printStackTrace();
     }
     routerScene = new Scene(routerMainContainer, 600, 350);
-    String defaultTheme = RoutesUtils.getDefaultTheme();
+    String defaultTheme = RouterUtils.getDefaultTheme();
     if (defaultTheme != null)
       routerScene.getStylesheets().add(defaultTheme);
   }

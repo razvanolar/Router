@@ -5,5 +5,6 @@ package code.router.utils;
  */
 public class HardCodedConstants {
 
-  public static final String PROJECT_ROUTE_PATH = "C:\\Users\\razvanolar\\Desktop\\";
+  public static final String PROJECT_DEFAULT_PATH = "C:\\Users\\razvanolar\\Desktop\\";
+  public static final String PROJECT_ROUTES_PATH = PROJECT_DEFAULT_PATH + "RouterUtil\\";
 }

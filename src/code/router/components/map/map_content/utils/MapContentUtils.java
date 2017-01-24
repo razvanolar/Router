@@ -262,11 +262,13 @@ public class MapContentUtils {
   private List<Marker> createMarkersFromResult(Object result, MarkerTypes type) throws Exception {
     if (result != null && result instanceof String) {
       String[] split = ((String) result).split(",");
-      List<Marker> markers = new ArrayList<>(split.length / 2 + 1);
-      for (int i = 0; i < split.length; i += 2) {
-        markers.add(createMarkerFromArray(new String[]{split[i], split[i + 1]}, type));
+      if (split.length >= 2) {
+        List<Marker> markers = new ArrayList<>(split.length / 2 + 1);
+        for (int i = 0; i < split.length; i += 2) {
+          markers.add(createMarkerFromArray(new String[]{split[i], split[i + 1]}, type));
+        }
+        return markers;
       }
-      return markers;
     }
     return null;
   }

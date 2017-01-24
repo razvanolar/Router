@@ -14,7 +14,7 @@ import code.router.events.show_new_route_dialog_event.ShowNewRouteDialogEvent;
 import code.router.model.routes.Route;
 import code.router.utils.Component;
 import code.router.utils.Controller;
-import code.router.utils.RoutesUtils;
+import code.router.utils.RouterUtils;
 import code.router.utils.View;
 import code.router.utils.factories.ComponentFactory;
 import code.router.utils.types.ComponentTypes;
@@ -72,7 +72,7 @@ public class MapContentController implements Controller<MapContentController.IMa
     WebView webView = createWebView();
     this.view.setMap(webView);
     webEngine = webView.getEngine();
-    webEngine.load(RoutesUtils.getHtmlMapFile());
+    webEngine.load(RouterUtils.getHtmlMapFile());
     utils  = new MapContentUtils(webEngine);
 
     Worker<Void> loadWorker = webEngine.getLoadWorker();

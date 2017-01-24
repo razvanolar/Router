@@ -1,6 +1,6 @@
 package code.router.components.utils;
 
-import code.router.utils.RoutesUtils;
+import code.router.utils.RouterUtils;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -54,7 +54,7 @@ public class OkCancelDialog {
     addListeners();
     if (scene == null) {
       scene = new Scene(mainContainer);
-      String themePath = RoutesUtils.getDefaultTheme();
+      String themePath = RouterUtils.getDefaultTheme();
       if (themePath != null)
         scene.getStylesheets().add(themePath);
       stage.setScene(scene);

@@ -1,5 +1,7 @@
 package code.router.utils.validators;
 
+import code.router.utils.FileUtils;
+
 import java.io.File;
 
 /**
@@ -9,6 +11,6 @@ public class RouteFileValidator implements FileValidator {
 
   @Override
   public boolean isValidFile(File file) {
-    return file != null && file.getName().toLowerCase().trim().endsWith(".route");
+    return file != null && FileUtils.isRouteFileName(file.getName());
   }
 }

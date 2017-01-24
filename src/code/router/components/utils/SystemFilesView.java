@@ -3,6 +3,7 @@ package code.router.components.utils;
 import code.router.model.trees.LazyTreeItem;
 import code.router.utils.View;
 import code.router.utils.validators.FileValidator;
+import code.router.utils.validators.StringValidator;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.ObservableList;
@@ -176,7 +177,7 @@ public class SystemFilesView implements View {
   }
 
   private void scrollToPath(String path) {
-    if (path == null || path.isEmpty())
+    if (StringValidator.isNullOrEmpty(path))
       return;
     path = path.replace("\\", "\\\\");
     String[] files = path.split("\\\\");

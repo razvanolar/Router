@@ -8,7 +8,7 @@ import java.util.List;
 public class MapDetails {
 
   private String name;
-  private String relativeProjectPath;
+  private String parentDirPath;
   private Marker startMarker;
   private Marker endMarker;
   private LatLng mapCenter;
@@ -30,8 +30,8 @@ public class MapDetails {
     return name;
   }
 
-  public String getRelativeProjectPath() {
-    return relativeProjectPath;
+  public String getParentDirPath() {
+    return parentDirPath;
   }
 
   public Marker getStartMarker() {
@@ -62,7 +62,7 @@ public class MapDetails {
     this.name = name;
   }
 
-  public void setRelativeProjectPath(String relativeProjectPath) {
-    this.relativeProjectPath = relativeProjectPath;
+  public void setParentDirPath(String parentDirPath) {
+    this.parentDirPath = parentDirPath;
   }
 }

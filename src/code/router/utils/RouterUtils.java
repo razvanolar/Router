@@ -5,7 +5,7 @@ import java.io.File;
 /**
  * Created by razvanolar on 03.01.2017
  */
-public class RoutesUtils {
+public class RouterUtils {
 
   public static String getDefaultTheme() {
     return getFilePath(new File(RouterConstants.DEFAULT_THEME));

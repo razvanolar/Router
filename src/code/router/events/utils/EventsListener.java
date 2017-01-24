@@ -54,13 +54,13 @@ public class EventsListener {
       dialog.getOkButton().setDisable(true);
       SaveRouteDialogController saveRouteDialogController = new SaveRouteDialogController(dialog.getOkButton());
       SaveRouteDialogController.ISaveRouteDialogView saveRouteDialogView = new SaveRouteDialogView(
-              event.getMapDetails().getName(), event.getMapDetails().getRelativeProjectPath());
+              event.getMapDetails().getName(), event.getMapDetails().getParentDirPath());
       saveRouteDialogController.bind(saveRouteDialogView);
       dialog.setContent(saveRouteDialogView.asNode());
       dialog.getOkButton().setOnAction(event1 -> {
         MapDetails mapDetails = event.getMapDetails();
         mapDetails.setName(saveRouteDialogController.getRouteName());
-        mapDetails.setRelativeProjectPath(saveRouteDialogController.getRoutePath());
+        mapDetails.setParentDirPath(saveRouteDialogController.getRoutePath());
         dialog.close();
         EventBus.fireEvent(new SaveRouteEvent(mapDetails));
       });
@@ -69,8 +69,8 @@ public class EventsListener {
 
     EventBus.addHandler(OpenRouteEvent.TYPE, (OpenRouteEventHandler) event -> {
       OkCancelDialog dialog = new OkCancelDialog("Open Route File", null);
-      File rootFile = new File(HardCodedConstants.PROJECT_ROUTE_PATH);
-      SystemFilesView systemFilesView = new SystemFilesView(dialog.getOkButton(), rootFile, true, null, new RouteFileValidator());
+      File rootFile = new File(HardCodedConstants.PROJECT_DEFAULT_PATH);
+      SystemFilesView systemFilesView = new SystemFilesView(dialog.getOkButton(), rootFile, true, HardCodedConstants.PROJECT_ROUTES_PATH, new RouteFileValidator());
       dialog.setContent(systemFilesView.asNode());
       dialog.show();
     });

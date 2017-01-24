@@ -160,7 +160,7 @@ public class MapController implements Controller<MapController.IMapView> {
         MapDetails mapDetails = mapContentController.getUtils().getMapDetails();
         if (mapDetails != null) {
           mapDetails.setName(event.getRouteName());
-          mapDetails.setRelativeProjectPath(relativeProjectPath);
+          mapDetails.setParentDirPath(relativeProjectPath);
           EventBus.fireEvent(new ShowSaveRouteDialogEvent(mapDetails));
         }
       }
