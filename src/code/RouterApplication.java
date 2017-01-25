@@ -28,6 +28,7 @@ public class RouterApplication extends Application {
     }
     routerScene = new Scene(routerMainContainer, 600, 350);
     String defaultTheme = RouterUtils.getDefaultTheme();
+    System.out.println("theme: " + defaultTheme);
     if (defaultTheme != null)
       routerScene.getStylesheets().add(defaultTheme);
   }

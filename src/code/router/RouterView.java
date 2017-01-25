@@ -9,12 +9,13 @@ import code.router.events.mask_unmask_window_event.MaskWindowEventHandler;
 import code.router.events.mask_unmask_window_event.UnmaskWindowEvent;
 import code.router.events.mask_unmask_window_event.UnmaskWindowEventHandler;
 import code.router.events.new_route_event.AddNewRouteViewEvent;
-import code.router.events.new_route_event.NewRouteViewEventHandler;
+import code.router.events.new_route_event.AddNewRouteViewEventHandler;
 import code.router.events.show_projects_tree_event.ShowProjectsTreeEvent;
 import code.router.events.show_projects_tree_event.ShowProjectsTreeEventHandler;
 import code.router.events.show_routes_tree_events.ShowRouteTreeEvent;
 import code.router.events.show_routes_tree_events.ShowRouteTreeEventHandler;
 import code.router.utils.Component;
+import code.router.utils.RouterConstants;
 import code.router.utils.View;
 import code.router.utils.factories.ComponentFactory;
 import code.router.utils.types.ComponentTypes;
@@ -99,7 +100,7 @@ public class RouterView implements RouterController.IRouterView {
       mainContainer.getChildren().remove(maskPane.asNode());
     });
 
-    EventBus.addHandler(AddNewRouteViewEvent.TYPE, (NewRouteViewEventHandler) this::addMapTab);
+    EventBus.addHandler(AddNewRouteViewEvent.TYPE, (AddNewRouteViewEventHandler) this::addMapTab);
   }
 
   private void clearLeftItem() {

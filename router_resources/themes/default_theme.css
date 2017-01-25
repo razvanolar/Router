@@ -14,12 +14,20 @@
 
 .clearButtonsContainer .button:hover, .clearButtonsContainer .toggle-button:hover {
     -fx-background-color: darkgrey;
+    -fx-background-radius: 0;
 }
 
 .clearButtonsContainer .button:armed {
     -fx-background-color: darkcyan;
+    -fx-background-radius: 0;
 }
 
 .clearButtonsContainer .toggle-button:selected {
     -fx-background-color: lightgray;
+    -fx-background-radius: 0;
+}
+
+/* tab pane style */
+.tab-pane .tab-header-area .tab-header-background {
+    -fx-background-color: #eeeeee;
 }

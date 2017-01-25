@@ -1,6 +1,7 @@
 
 package code.router.utils.resources;
 
+import code.router.utils.RouterConstants;
 import javafx.scene.image.Image;
 
 import java.io.File;
@@ -11,7 +12,7 @@ import java.io.File;
  */
 public class ImageProvider {
 
-  public static final String PATH = "resources\\images\\";
+  public static final String PATH = RouterConstants.RESOURCES_PATH + "images\\";
 
   public static Image genericFile() {
     return getImage(new File(PATH + "generic_file.png"));

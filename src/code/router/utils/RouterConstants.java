@@ -4,7 +4,7 @@ package code.router.utils;
  * Created by razvanolar on 03.01.2017
  */
 public class RouterConstants {
-  public static final String RESOURCES_PATH = "resources\\";
+  public static final String RESOURCES_PATH = "router_resources\\";
 
   public static final String THEMES_DIR_PATH = RESOURCES_PATH + "themes\\";
   public static final String DEFAULT_THEME = THEMES_DIR_PATH + "default_theme.css";

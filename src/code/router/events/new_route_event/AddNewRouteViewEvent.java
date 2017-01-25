@@ -7,7 +7,7 @@ import code.router.utils.event.EventType;
 /**
  * Created by razvanolar on 29.12.2016
  */
-public class AddNewRouteViewEvent extends Event<NewRouteViewEventHandler> {
+public class AddNewRouteViewEvent extends Event<AddNewRouteViewEventHandler> {
 
   private String title;
   private Route routeToBeLoaded;
@@ -21,7 +21,7 @@ public class AddNewRouteViewEvent extends Event<NewRouteViewEventHandler> {
     this.routeToBeLoaded = routeToBeLoaded;
   }
 
-  public static EventType<NewRouteViewEventHandler> TYPE = new EventType<>();
+  public static EventType<AddNewRouteViewEventHandler> TYPE = new EventType<>();
 
   public String getTitle() {
     return title;
@@ -37,7 +37,7 @@ public class AddNewRouteViewEvent extends Event<NewRouteViewEventHandler> {
   }
 
   @Override
-  public void dispatch(NewRouteViewEventHandler handler) {
+  public void dispatch(AddNewRouteViewEventHandler handler) {
     handler.onNewRouteEvent(this);
   }
 }
