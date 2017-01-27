@@ -26,6 +26,7 @@ import code.router.utils.View;
 import code.router.utils.callbacks.DialogCallback;
 import code.router.utils.factories.DialogControllerFactory;
 import code.router.utils.types.DialogComponentTypes;
+import code.router.utils.types.NotificationLevelTypes;
 import code.router.utils.validators.RouteFileValidator;
 import com.jfoenix.controls.JFXDialog;
 import javafx.geometry.Pos;
@@ -94,8 +95,11 @@ public class EventsListener {
               .text(event.getMessage())
               .hideAfter(Duration.seconds(5))
               .position(Pos.BOTTOM_RIGHT)
-              .graphic(null);
-      notification.darkStyle();
+              .graphic(null)
+              .materiaDesignStyle();
+      if (event.getNotificationLevel() == NotificationLevelTypes.INFO) notification.setHeaderCheck();
+      else if (event.getNotificationLevel() == NotificationLevelTypes.WARNING) notification.setHeaderWarning();
+      else if (event.getNotificationLevel() == NotificationLevelTypes.ERROR) notification.setHeaderError();
       notification.show();
     });
   }
