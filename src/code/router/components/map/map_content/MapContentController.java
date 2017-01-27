@@ -12,10 +12,7 @@ import code.router.events.routes_events.find_route_in_new_window_event.FindRoute
 import code.router.events.routes_events.find_route_in_new_window_event.FindRouteInNewWindowEventHandler;
 import code.router.events.show_new_route_dialog_event.ShowNewRouteDialogEvent;
 import code.router.model.routes.Route;
-import code.router.utils.Component;
-import code.router.utils.Controller;
-import code.router.utils.RouterUtils;
-import code.router.utils.View;
+import code.router.utils.*;
 import code.router.utils.factories.ComponentFactory;
 import code.router.utils.types.ComponentTypes;
 import javafx.concurrent.Worker;
@@ -80,6 +77,7 @@ public class MapContentController implements Controller<MapContentController.IMa
       if (newValue == Worker.State.SUCCEEDED) {
         utils.mapHeightChanged(this.view.getMainContainer().getHeight());
         utils.setDomLoaded(true);
+        webEngine.executeScript("document.body.style.overflow = 'hidden';");
         EventBus.fireEvent(new UnmaskWindowEvent());
         if (route != null) {
           EventBus.fireEvent(new FindRouteEvent(route));
